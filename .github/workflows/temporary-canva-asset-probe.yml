@@ -1,0 +1,41 @@
+name: Temporary Canva asset transport probe
+
+on:
+  pull_request:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/temporary-canva-asset-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe exact and source-resolution asset routes
+        shell: bash
+        run: |
+          set +e
+          base='ifs%3A%2F%2FM%2Fa94e76f9-6755-4e59-930c-d11a6c6a5d75'
+          csig='AAAAAAAAAAAAAAAAAAAAAAHqOCLCekvOWR5w_Kzq1YKPxlKgsVqT4KYaEBImDajW'
+          osig='AAAAAAAAAAAAAAAAAAAAANjYv2DWDBLvWj3tOrfkaxlD0u7EmwWaDasqM-2U9AZV'
+          exp='1785640033'
+          urls=(
+            "https://media.canva.com/v2/image-resize/format:PNG/height:166/quality:100/uri:${base}/watermark:F/width:200?csig=${csig}&exp=${exp}&osig=${osig}&signer=media-rpc&x-canva-quality=thumbnail"
+            "https://media.canva.com/v2/image-resize/format:PNG/height:1280/quality:100/uri:${base}/watermark:F/width:1536?csig=${csig}&exp=${exp}&osig=${osig}&signer=media-rpc"
+            "https://media.canva.com/v2/image-resize/format:WEBP/quality:100/uri:${base}/watermark:F/width:1536?csig=${csig}&exp=${exp}&signer=media-rpc"
+            "https://media.canva.com/v2/image-resize/format:PNG/quality:100/uri:${base}/watermark:F/width:1536?csig=${csig}&exp=${exp}&signer=media-rpc"
+            "https://media.canva.com/ifs/M/a94e76f9-6755-4e59-930c-d11a6c6a5d75"
+          )
+          index=0
+          for url in "${urls[@]}"; do
+            index=$((index + 1))
+            code=$(curl --silent --show-error --location --max-time 30 --output "probe-${index}" --write-out '%{http_code}' "$url")
+            bytes=$(wc -c < "probe-${index}" 2>/dev/null || echo 0)
+            kind=$(file -b "probe-${index}" 2>/dev/null || true)
+            printf 'PROBE %s status=%s bytes=%s type=%s\n' "$index" "$code" "$bytes" "$kind"
+            if command -v identify >/dev/null 2>&1; then identify "probe-${index}" 2>/dev/null || true; fi
+          done
