@@ -1,0 +1,40 @@
+name: Temporary Version 2 cleanup
+
+on:
+  pull_request:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/temporary-v2-cleanup.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hollow-and-hoard-version-2-cleanup
+  cancel-in-progress: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out Version 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: version-2-cynthia-feedback
+          fetch-depth: 0
+
+      - name: Remove temporary evidence carrier and cleanup workflow
+        run: |
+          set -euo pipefail
+          rm -rf test-evidence/v2
+          rm -f .github/workflows/temporary-v2-cleanup.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Remove temporary Version 2 evidence carrier"
+          git push origin HEAD:version-2-cynthia-feedback
