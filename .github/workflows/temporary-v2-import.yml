@@ -1,0 +1,63 @@
+name: Temporary Version 2 source import
+
+on:
+  push:
+    branches:
+      - version-2-cynthia-feedback
+    paths:
+      - "transport/v2/READY"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hollow-and-hoard-version-2-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out exact branch head
+        uses: actions/checkout@v4
+        with:
+          ref: version-2-cynthia-feedback
+          fetch-depth: 0
+
+      - name: Reconstruct and verify source archive
+        run: |
+          set -euo pipefail
+          cat transport/v2/source.zip.base64.part-* | tr -d '\r\n[:space:]' | base64 --decode > /tmp/v2-source.zip
+          echo "39d5543a14802c8d7adb20f9870cded5ce4c84071acd405f32507d21c51f69dc  /tmp/v2-source.zip" | sha256sum --check --strict
+          unzip -q -o /tmp/v2-source.zip -d .
+
+      - name: Verify imported source and art transport
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run complete Version 2 rule and integrity suite
+        run: |
+          node --check src/app.js
+          node --check src/audio.js
+          node --check src/gameLogic.js
+          node --check src/productionAssets.js
+          node --check src/storage.js
+          npm test
+
+      - name: Remove temporary transport and probe machinery
+        run: |
+          rm -rf transport/v2
+          rm -f .github/workflows/temporary-canva-asset-probe.yml
+          rm -f .github/workflows/temporary-v2-import.yml
+          rm -f src/atlas.js src/relicSummary.js tests/assetIntegrity.test.js tests/relicSummary.test.js
+
+      - name: Commit exact verified Version 2 source
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Import verified Version 2 implementation"
+          git push origin HEAD:version-2-cynthia-feedback
