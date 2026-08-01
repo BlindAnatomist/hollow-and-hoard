@@ -1,32 +1,26 @@
 {
-  "atlases": {
-    "goblin-lineage-atlas.webp": {
-      "dimensions": [768, 192],
-      "cell": [128, 192],
-      "sprites": {
-        "imp": {"x": 0, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
-        "goblin": {"x": 128, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
-        "hobgoblin": {"x": 256, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
-        "troll": {"x": 384, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
-        "ogre": {"x": 512, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
-        "relicBlossom": {"x": 640, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]}
-      }
-    },
-    "world-elements-atlas.webp": {
-      "dimensions": [768, 192],
-      "cell": [192, 192],
-      "sprites": {
-        "stoneTile": {"x": 0, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.5]},
-        "goblinSpawner": {"x": 192, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.92]},
-        "hoardChamber": {"x": 384, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.92]},
-        "codexIcon": {"x": 576, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.5]}
-      }
-    }
+  "atlas": "first-playable-atlas.webp",
+  "dimensions": [384, 256],
+  "source": "Composited and downsampled from the approved extracted Hollow & Hoard art; no creature or interface design was regenerated for this transport.",
+  "sprites": {
+    "goblin.imp": {"x": 18, "y": 43, "width": 48, "height": 65, "anchor": [0.5, 0.95]},
+    "goblin.goblin": {"x": 60, "y": 35, "width": 54, "height": 73, "anchor": [0.5, 0.95]},
+    "goblin.hobgoblin": {"x": 105, "y": 25, "width": 64, "height": 83, "anchor": [0.5, 0.95]},
+    "goblin.troll": {"x": 158, "y": 20, "width": 75, "height": 90, "anchor": [0.5, 0.95]},
+    "goblin.ogre": {"x": 225, "y": 3, "width": 75, "height": 111, "anchor": [0.5, 0.95]},
+    "goblin.relicBlossom": {"x": 293, "y": 20, "width": 86, "height": 93, "anchor": [0.5, 0.95]},
+    "board.stoneTile": {"x": 25, "y": 118, "width": 104, "height": 61, "anchor": [0.5, 0.5]},
+    "world.goblinSpawner": {"x": 125, "y": 98, "width": 100, "height": 84, "anchor": [0.5, 0.92]},
+    "world.hoardChamber": {"x": 225, "y": 95, "width": 115, "height": 88, "anchor": [0.5, 0.92]},
+    "ui.codex": {"x": 58, "y": 184, "width": 54, "height": 54, "anchor": [0.5, 0.5]},
+    "ui.playReference": {"x": 105, "y": 185, "width": 84, "height": 50, "anchor": [0.5, 0.5]},
+    "ui.returnReference": {"x": 184, "y": 185, "width": 94, "height": 50, "anchor": [0.5, 0.5]}
   },
   "notes": [
-    "Composited from approved extracted assets; no fresh creature redesign.",
-    "Transparent WebP atlases for first-playable layout, scale, and drag testing.",
-    "Text is not baked into these atlases.",
-    "Use CSS background-size equal to each atlas dimensions and background-position from the sprite rectangle."
+    "Coordinates are provisional extraction rectangles for early scaffold use and must be visually checked in the running layout.",
+    "The atlas is transparent WebP transported as Base64 text.",
+    "Generated words or labels inside UI reference regions are not authoritative copy and must not be shipped as text.",
+    "Use CSS background-size: 384px 256px and negative background-position derived from each rectangle, or crop the decoded atlas into separate files in a file-capable implementation environment.",
+    "Do not regenerate these designs merely to obtain separate files; decode and crop the preserved atlas first."
   ]
 }
