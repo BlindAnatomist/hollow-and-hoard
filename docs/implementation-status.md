@@ -6,21 +6,22 @@ Visibility: public
 
 Default branch: `main`
 
+Active development branch: `art-direction-and-first-assets`
+
 Status date: 2026-07-31
 
 ## Project identity
 
-Hollow & Hoard is an independent nocturnal creature-merging game. It may inherit deliberately selected lessons from Moticos for Cynthia, but it must remain separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
+Hollow & Hoard is an independent nocturnal creature-merging game for Cynthia. It may inherit deliberately selected lessons from Moticos for Cynthia, but it remains separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
 
-The authoritative working design foundation is `docs/PROJECT_DEFINITION.md`.
+The authoritative working foundations are:
 
-## Current accepted repository state
+- `docs/PROJECT_DEFINITION.md`
+- `docs/VISUAL_DIRECTION.md`
 
-The public repository has been created under the accepted name:
+## Current repository state
 
-`hollow-and-hoard`
-
-The initial governance and definition foundation consists of:
+The governance foundation consists of:
 
 - `README.md`
 - `AGENTS.md`
@@ -28,37 +29,98 @@ The initial governance and definition foundation consists of:
 - `docs/PREFLIGHT.md`
 - `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`
 - `docs/PROJECT_DEFINITION.md`
+- `docs/VISUAL_DIRECTION.md`
 - `docs/implementation-status.md`
 
-No application code, package manager, dependency, workflow, deployment configuration, external service, paid asset, or hosting target has been added.
+No application framework, package manager, workflow, deployment configuration, external service, or hosting target has yet been added.
+
+## Audience correction
+
+The game is for Cynthia, not for the owner.
+
+VoiceOver-specific operation is not a first-playable requirement. The owner remains project director and must receive inspected verbal descriptions of visual work. Cynthia is the acceptance authority for movement, artwork, sound, pacing, and delight.
+
+## Art-direction state
+
+The first broad concept pass established:
+
+- the moonlit hollow;
+- warm goblin materials;
+- architectural gargoyle materials;
+- the Mosscap;
+- the gentle guardian Ogre;
+- parchment Codex treatment;
+- a carved stone board;
+- a separate glowing Hoard Chamber;
+- amber-versus-lavender lighting.
+
+The second refinement pass corrected:
+
+- weak early goblin silhouette separation;
+- the gargoyle final form, turning it into a true relic;
+- an overcrowded and mechanically invented board interface;
+- generic mobile-game currency and shop language.
+
+The approved reference set is represented under:
+
+`assets/art-development/concepts/`
+
+The first composited transparent production candidates are represented under:
+
+`assets/art-development/provisional/`
+
+They include the Goblin Hollowkin lineage, Relic Blossom, stone tile, Goblin Spawner, Hoard Chamber, and Codex treatment. These are provisional production candidates, not final accepted art.
+
+## Art continuity rule
+
+Future image work must use the approved references and extracted or composited assets as source material whenever possible.
+
+Broad regeneration from scratch is not the default. New generation must answer a concrete missing requirement or an identified failure that cannot be corrected through editing, extraction, masking, or compositing.
+
+## Selected first playable
+
+The selected first-playable family is the Goblin Hollowkin line.
+
+The working first-playable scope is:
+
+- one five-by-five board;
+- direct drag relocation;
+- merge identical creatures anywhere on the board;
+- one Spawner;
+- one Relic Blossom completion;
+- one minimal Codex section;
+- one minimal Hoard Chamber;
+- save and reset;
+- undo when technically practical;
+- gentle representative sound;
+- no currency;
+- no turn limit;
+- no passive waiting timer;
+- no deployment without separate authorization.
 
 ## Concept source status
 
-The originating Claude React prototype was supplied in conversation and assessed as concept evidence rather than accepted production architecture.
+The originating Claude React prototype remains concept evidence rather than production architecture.
 
-Its useful elements include:
+Useful inherited ideas:
 
-- the title and nocturnal setting;
-- goblin and gargoyle bloodlines;
-- a discovery Codex;
-- procedural creature placeholders;
-- a board, merge operation, timed spawning, and save concept.
+- title and nocturnal setting;
+- creature bloodlines;
+- discovery Codex;
+- board and merge concept;
+- firefly ambience.
 
-Its unresolved or rejected-as-automatic elements include:
+Not automatically accepted:
 
-- tap-only movement rather than satisfying drag;
-- Claude-specific `window.storage` persistence;
-- passive six-second cooldowns;
-- adjacency rules combined with unrestricted relocation;
-- completed blossoms that can occupy board space permanently;
-- no actual Hoard Chamber or relic system;
-- placeholder rather than final artwork and sound.
-
-The exact prototype source has not yet been committed. It must be preserved through a clearly marked reference path before implementation if it is needed as an active source reference.
+- six-by-six board;
+- tap-only movement;
+- adjacency-limited merging;
+- six-second spawning cooldowns;
+- Claude-specific `window.storage`;
+- procedural SVG artwork;
+- completed objects that clog the board.
 
 ## Zero-dollar position
-
-The repository is governed by `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`.
 
 Current cost state:
 
@@ -71,81 +133,51 @@ Current cost state:
 - no billable service;
 - no GitHub Actions workflow.
 
-Standard GitHub-hosted Actions may be considered later only when confirmed zero-dollar for this public repository, the technical stack is known, and a bounded assignment establishes the exact checks.
+The art references and provisional assets were generated and processed within the available project tools. No third-party stock asset was introduced.
 
-## Accessibility position
+## Current verification
 
-Accessibility is part of the first implementation, not a later repair phase.
+Completed:
 
-The game must support reliable iPhone VoiceOver operation, including:
+- direct inspection of the concept and refinement passes;
+- owner authorization of the accepted corrections;
+- transparent-background verification for extracted provisional components;
+- preservation of visual continuity through an art bible, asset manifest, and atlas metadata;
+- incident records for unexplained image output, continuity loss, and invented game systems.
 
-- concise names and nonduplicative descriptions;
-- logical reading and focus order;
-- complete nonvisual access to board and game state;
-- an accessible operation equivalent to dragging that uses the same rules;
-- clear merge, discovery, failure, and recovery feedback;
-- no dependence on color, animation, spatial position, sound, or drag precision alone;
-- real-device VoiceOver testing at defined checkpoints.
+Not yet completed:
 
-## Player-experience position
-
-Cynthia's prior testing establishes design evidence, not automatic acceptance of this game.
-
-The first playable must pursue:
-
-- satisfying movement;
-- uncluttered beauty;
-- gentle sound without painful high-frequency effects;
-- meaningful progression;
-- advanced forms that become more distinctive and composed rather than simply larger or busier.
-
-Cynthia's direct testing is required before those qualities can be marked accepted.
-
-## Recorded incidents
-
-No Hollow & Hoard-specific implementation incident has yet occurred.
-
-General proven standards and future incident records belong in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
-
-## Unresolved implementation decisions
-
-Before application code is scaffolded, establish:
-
-1. exact board dimensions;
-2. movement, adjacency, relocation, and merge rules;
-3. first bloodline and final relic;
-4. spawning and crowding behavior;
-5. Hoard Chamber transition and environmental consequence;
-6. undo, reset, and recovery behavior;
-7. technical stack and package manager;
-8. save system and schema;
-9. artwork method and licensing;
-10. sound method and safe temporary sound set;
-11. test strategy;
-12. first VoiceOver acceptance checkpoint;
-13. hosted preview mechanism, only after separate authorization.
+- transfer verification for the playable atlas bytes;
+- board-scale silhouette testing in a running application;
+- animation testing;
+- Cynthia play testing;
+- sound implementation;
+- save-state testing;
+- production build;
+- hosted preview.
 
 ## Next bounded task
 
-Perform the first implementation-planning pass:
+Complete the art transport, then create the first application scaffold on the active development branch:
 
-1. inspect the Moticos repository only for deliberate transferable technical and accessibility lessons;
-2. inspect its current package structure and testing approach without copying its game code or assets;
-3. choose the smallest suitable zero-dollar stack;
-4. define the first playable state machine and acceptance tests;
-5. preserve the Claude prototype as a clearly marked reference if needed;
-6. scaffold the application on a bounded development branch;
-7. add only the minimum checks required by the chosen stack;
-8. stop before deployment until the owner explicitly authorizes a hosted preview.
+1. verify that the provisional atlas bytes decode to the recorded hashes;
+2. choose a minimal static web stack suitable for touch dragging;
+3. implement a five-by-five board;
+4. load the preserved Goblin Hollowkin assets;
+5. implement relocation and identical-pair merging;
+6. implement Spawner, Relic Blossom transfer, Codex, and Hoard Chamber placeholders;
+7. add only the minimum local checks required by the chosen stack;
+8. stop before deployment;
+9. inspect the running layout at actual iPhone scale before generating additional art.
 
 ## Prohibited assumptions
 
-Until explicitly decided, do not assume:
+Do not assume:
 
-- that the Claude prototype should become the application entry point;
-- that Moticos code or assets should be copied;
-- that a six-by-six board, timed spawning, or adjacency rule is accepted;
-- that React, Vite, TypeScript, or another framework is authorized merely because another prototype used it;
-- that repository setup authorizes Actions, deployment, publication, or release;
-- that free-tier availability authorizes creation of an external service;
-- that visual attractiveness establishes accessibility or Cynthia's acceptance.
+- the Claude prototype should become the application entry point;
+- Moticos code or assets should be copied;
+- new images should replace approved images merely because generation is available;
+- the provisional assets are final;
+- repository setup authorizes Actions, deployment, publication, or release;
+- free-tier availability authorizes creation of an external service;
+- visual attractiveness in a still image guarantees good movement or Cynthia's acceptance.
