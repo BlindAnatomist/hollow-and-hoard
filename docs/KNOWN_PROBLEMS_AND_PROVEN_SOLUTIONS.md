@@ -160,6 +160,124 @@ All mechanics shown in generated art are placeholders unless independently recor
 
 Repository-wide for visual concepts and prototypes.
 
+### HAH-004 — Long single-line Base64 transport corrupted the playable atlas
+
+Status: `proven`
+
+First observed: 2026-07-31
+
+Affected area: repository asset transport and browser startup
+
+#### Symptoms
+
+The rule suite and static server passed, but Chromium and WebKit both failed before the hollow opened because the committed atlas could not be decoded. The browser reported an invalid image source even though the canonical local WebP was valid.
+
+#### Cause
+
+The GitHub connector transport truncated or altered the very long single-line Base64 value. The canonical source remained valid at 27,118 decoded bytes, 384 by 256 pixels, with SHA-256 `f460c77a7caec6e8d6b92f1cf847a6758128e901797dfc6f81cf2d18dd2a04d8`.
+
+#### Failed approaches
+
+- trusting the existence of the committed text file as proof of byte fidelity;
+- loading the unverified single-line value directly as a data URL;
+- relying only on manifest metadata without executing a reconstruction test.
+
+#### Proven solution
+
+The canonical Base64 was split into four ordered files of exactly 9,040 characters each. `tests/assetIntegrity.test.js` now concatenates the parts and verifies:
+
+- 36,160 total Base64 characters;
+- 27,118 decoded bytes;
+- RIFF and WEBP signatures;
+- the recorded SHA-256.
+
+`src/atlas.js` performs corresponding runtime validation and creates a Blob URL only after reconstruction succeeds. The corrupted single-file transport was deleted.
+
+Passing evidence: bounded browser smoke run `30683744112`, job `91325784930`.
+
+#### Prevention rule
+
+Never transport a large binary asset as one unverified connector-written line. Use bounded ordered parts or a binary-capable route, and require an executable byte-count and hash gate before browser testing.
+
+#### Scope
+
+Repository-wide for Base64 or other text-encoded binary assets.
+
+### HAH-005 — Nonempty sprite crops can still contain neighboring artwork
+
+Status: `proven`
+
+First observed: 2026-07-31
+
+Affected area: atlas mapping and visual acceptance
+
+#### Symptoms
+
+The first successful browser run proved that every Canvas contained visible pixels, yet screenshot inspection found thin fragments from neighboring atlas regions in the Spawner, Hoard Chamber, and Relic Blossom crops.
+
+#### Cause
+
+A nontransparent-pixel assertion proves that a crop is not blank; it does not prove that the crop contains only the intended object. The original rectangles were deliberately generous and crossed visual boundaries inside the compact atlas.
+
+#### Failed approaches
+
+- treating nonempty Canvas output as sufficient visual acceptance;
+- accepting provisional extraction rectangles without screenshot inspection at actual layout scale.
+
+#### Proven solution
+
+The crop rectangles in `atlas-map.json` were tightened against the canonical atlas. Replacement Chromium and mobile WebKit screenshots confirmed:
+
+- no upper-row fragments on the Spawner or Hoard Chamber;
+- no adjacent Ogre slice on the Relic Blossom;
+- clearer and larger Imp silhouettes at board scale;
+- no horizontal overflow or layout regression.
+
+Passing evidence: bounded browser smoke run `30683744112`, job `91325784930`.
+
+#### Prevention rule
+
+Every atlas crop must pass both automated pixel checks and direct visual inspection in its real interface context. Nonempty is necessary; isolated and compositionally clean is the acceptance criterion.
+
+#### Scope
+
+Repository-wide for sprite sheets, atlases, thumbnails, and generated composite assets.
+
+### HAH-006 — Netlify MCP CLI deployment is unavailable in this execution environment
+
+Status: `failed-do-not-repeat`
+
+First observed: 2026-07-31
+
+Affected area: temporary preview deployment
+
+#### Symptoms
+
+Netlify created the isolated zero-cost project `hollow-and-hoard-preview` and supplied an authenticated deployment command. Running that command from the exact tested runtime directory failed before contacting Netlify because the environment’s internal npm mirror returned 404 for `@netlify/mcp`. A materially different attempt against the public npm registry timed out.
+
+#### Cause
+
+The required Netlify MCP package is unavailable through the execution environment’s configured package mirror, and direct access to the public npm registry is blocked or nonresponsive.
+
+#### Failed approaches
+
+- invoking `npx @netlify/mcp` through the internal package mirror;
+- overriding npm to use the public registry from this environment.
+
+#### Current safe route
+
+Do not repeat either package route here. Preserve the exact tested runtime artifact and deploy it only from an environment that can obtain the official Netlify MCP or CLI package, or through a future connector action that accepts a local directory or ZIP directly.
+
+The blank isolated Netlify project exists, but no deploy was created and no game was published.
+
+#### Prevention rule
+
+A hosting project and a tested runtime artifact do not constitute a deployment. Do not report a preview URL as live until the hosting service returns a successful deploy record and the URL is smoke-tested.
+
+#### Scope
+
+Current execution environment and this preview deployment route.
+
 ## Incident entry template
 
 ### HAH-000 — Concise problem name
