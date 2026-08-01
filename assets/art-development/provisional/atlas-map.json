@@ -1,0 +1,32 @@
+{
+  "atlases": {
+    "goblin-lineage-atlas.webp": {
+      "dimensions": [768, 192],
+      "cell": [128, 192],
+      "sprites": {
+        "imp": {"x": 0, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
+        "goblin": {"x": 128, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
+        "hobgoblin": {"x": 256, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
+        "troll": {"x": 384, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
+        "ogre": {"x": 512, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]},
+        "relicBlossom": {"x": 640, "y": 0, "width": 128, "height": 192, "anchor": [0.5, 0.95]}
+      }
+    },
+    "world-elements-atlas.webp": {
+      "dimensions": [768, 192],
+      "cell": [192, 192],
+      "sprites": {
+        "stoneTile": {"x": 0, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.5]},
+        "goblinSpawner": {"x": 192, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.92]},
+        "hoardChamber": {"x": 384, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.92]},
+        "codexIcon": {"x": 576, "y": 0, "width": 192, "height": 192, "anchor": [0.5, 0.5]}
+      }
+    }
+  },
+  "notes": [
+    "Composited from approved extracted assets; no fresh creature redesign.",
+    "Transparent WebP atlases for first-playable layout, scale, and drag testing.",
+    "Text is not baked into these atlases.",
+    "Use CSS background-size equal to each atlas dimensions and background-position from the sprite rectangle."
+  ]
+}
