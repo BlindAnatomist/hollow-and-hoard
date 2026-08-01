@@ -1,0 +1,54 @@
+name: Temporary Version 2 evidence extraction
+
+on:
+  pull_request:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/temporary-v2-evidence-extract.yml"
+      - "docs/VERSION_2_BROWSER_GATE_RESULT.md"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: hollow-and-hoard-version-2-evidence-extraction
+  cancel-in-progress: true
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out Version 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: version-2-cynthia-feedback
+          fetch-depth: 0
+
+      - name: Download latest passing browser evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          artifact_id=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+            --jq '[.artifacts[] | select(.name == "hollow-and-hoard-version-2-browser-smoke" and (.expired | not))] | sort_by(.created_at) | last | .id // empty')
+          if [[ -z "$artifact_id" ]]; then
+            echo "No current Version 2 browser artifact was found." >&2
+            exit 1
+          fi
+          mkdir -p test-evidence/v2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > test-evidence/v2/browser-smoke.zip
+          echo "$artifact_id" > test-evidence/v2/ARTIFACT_ID.txt
+          sha256sum test-evidence/v2/browser-smoke.zip > test-evidence/v2/browser-smoke.zip.sha256
+
+      - name: Remove extractor and commit evidence archive
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/temporary-v2-evidence-extract.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Preserve Version 2 browser evidence for inspection"
+          git push origin HEAD:version-2-cynthia-feedback
