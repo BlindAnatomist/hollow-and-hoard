@@ -1,0 +1,138 @@
+[
+  {
+    "name": "chromium-desktop",
+    "passed": true,
+    "canvasReport": {
+      "count": 12,
+      "allNonTransparent": true,
+      "dimensions": [
+        [
+          54,
+          54
+        ],
+        [
+          94,
+          72
+        ],
+        [
+          108,
+          72
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ]
+      ]
+    },
+    "layout": {
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "boardLeft": 321,
+      "boardRight": 959,
+      "boardWidth": 638,
+      "minimumCell": 121.1875
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  {
+    "name": "webkit-iphone-large",
+    "passed": true,
+    "canvasReport": {
+      "count": 12,
+      "allNonTransparent": true,
+      "dimensions": [
+        [
+          54,
+          54
+        ],
+        [
+          94,
+          72
+        ],
+        [
+          108,
+          72
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ],
+        [
+          43,
+          48
+        ]
+      ]
+    },
+    "layout": {
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "boardLeft": 16,
+      "boardRight": 414,
+      "boardWidth": 398,
+      "minimumCell": 76.390625
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  }
+]
