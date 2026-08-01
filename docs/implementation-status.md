@@ -8,6 +8,8 @@ Default branch: `main`
 
 Active development branch: `art-direction-and-first-assets`
 
+Draft pull request: `#1`
+
 Status date: 2026-07-31
 
 ## Project identity
@@ -19,6 +21,7 @@ The authoritative working foundations are:
 - `docs/PROJECT_DEFINITION.md`
 - `docs/VISUAL_DIRECTION.md`
 - `docs/FIRST_PLAYABLE_ARCHITECTURE.md`
+- `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`
 
 ## Audience authority
 
@@ -28,45 +31,48 @@ VoiceOver-specific operation is not a first-playable requirement. The owner rema
 
 ## Current implementation
 
-A dependency-free static first-playable scaffold now exists.
+A dependency-free static first-playable exists on the active development branch.
 
-Project files include:
+Primary files:
 
 - `index.html`
-- `package.json`
-- `package-lock.json`
 - `src/app.js`
 - `src/gameLogic.js`
 - `src/storage.js`
 - `src/atlas.js`
 - `src/audio.js`
+- `src/relicSummary.js`
 - `src/styles.css`
 - `tests/gameLogic.test.js`
+- `tests/assetIntegrity.test.js`
+- `tests/relicSummary.test.js`
+- `tests/browser-smoke.mjs`
 
-The scaffold uses native HTML, CSS, JavaScript ES modules, Pointer Events, Canvas sprite cropping, localStorage, native Web Audio, and the Node built-in test runner.
+The application uses native HTML, CSS, JavaScript ES modules, Pointer Events, Canvas sprite cropping, localStorage, native Web Audio, and the Node built-in test runner.
 
-No third-party runtime dependency, framework, package installation, build service, database, analytics system, or paid service is required.
+No third-party runtime dependency, framework, database, analytics system, paid API, or paid service is required. Playwright is installed only transiently inside the bounded manual test workflow.
 
 ## Implemented first-playable behavior
 
-Implemented in code:
+Implemented and browser-tested:
 
 - five-by-five board;
 - deterministic starting state with eight Imps;
-- direct drag threshold before movement begins;
-- floating drag copy;
-- restrained magnetic pull toward a matching creature;
+- six-pixel drag threshold;
+- floating drag copy with subdued source;
+- restrained magnetic pull toward a valid matching creature;
 - relocation to any empty tile;
 - equal-tier merging anywhere on the board;
 - unequal and outside drops returning to origin;
 - Imp, Goblin, Hobgoblin, Troll, and Ogre progression;
 - two Ogres producing a Relic Blossom;
 - completed relic transfer to a separate Hoard Chamber while freeing both board spaces;
-- twin-Imp Spawner with full-board handling;
+- twin-Imp Spawner with last-space and full-board handling;
 - one-step Undo;
 - versioned local save and reset;
+- persistence through browser reload;
 - discovery Codex;
-- Hoard Chamber relic count;
+- Hoard Chamber relic count with correct singular and plural grammar;
 - sound mute;
 - low, rounded native sound cues;
 - reduced-motion behavior;
@@ -84,7 +90,7 @@ Not included:
 - cloud saves;
 - social features.
 
-## Art-direction state
+## Art and asset state
 
 Approved visual continuity includes:
 
@@ -98,20 +104,18 @@ Approved visual continuity includes:
 - parchment Codex language;
 - restrained purple, moss, parchment, stone, and amber palette.
 
-The approved compact art reference and provisional atlas remain under:
+The application does not regenerate the approved artwork. It reconstructs the canonical compact WebP atlas from four bounded Base64 parts, verifies its byte count, WebP signatures, SHA-256, and dimensions, then crops individual sprites at runtime from `atlas-map.json`.
 
-- `assets/art-development/concepts/`
-- `assets/art-development/provisional/`
+Canonical atlas record:
 
-The application does not regenerate those images. It loads the exact committed Base64 WebP transport, verifies its expected dimensions, and crops individual sprites at runtime from `atlas-map.json`.
+- Base64 characters: `36,160`;
+- decoded bytes: `27,118`;
+- dimensions: `384 x 256`;
+- SHA-256: `f460c77a7caec6e8d6b92f1cf847a6758128e901797dfc6f81cf2d18dd2a04d8`.
 
-Generated words inside UI reference regions remain non-authoritative and are not used as final interface copy.
+Screenshot inspection found and corrected overly generous crop rectangles. The final Spawner, Hoard Chamber, and Relic Blossom crops contain no neighboring atlas fragments. The tightened creature rectangles also improve Imp scale and clarity on the board.
 
-## Art continuity rule
-
-Future image work must begin from the approved references or preserved atlas whenever technically possible.
-
-Use extraction, cropping, masking, compositing, scaling, color correction, or controlled editing before fresh generation. New broad image generation requires a concrete missing need or an explicit rejection of the current design.
+Future image work must begin from the approved references or preserved atlas whenever technically possible. Use extraction, cropping, masking, compositing, scaling, color correction, or controlled editing before fresh generation.
 
 ## Architecture transfer from Moticos
 
@@ -139,84 +143,166 @@ Not copied:
 - Tone.js audio implementation;
 - route structure.
 
-## Verification completed
+## Automated verification completed
 
-Completed:
+Final successful bounded browser gate:
 
-- direct inspection of the broad and refined art passes;
-- owner authorization of the accepted visual corrections;
-- preservation of visual continuity through an art bible, asset manifest, and atlas metadata;
-- atlas transport committed with recorded decoded size and SHA-256;
-- architecture plan committed;
-- dependency-free package and lock metadata committed;
-- pure game logic executed with Node `22.16.0`;
-- nine rule tests passed;
-- no rule test failed;
-- superseded controller removed so only `src/app.js` is active;
-- entry page points to the corrected delegated-pointer controller.
+- workflow run: `30683744112`;
+- job: `91325784930`;
+- application branch source through commit: `643833c93b872e32d4c7e5fea5012c8b0fa95a43`;
+- tested pull-request merge commit: `2bded6ebf4750d3fea405cc702b6b69c6e3d3438`;
+- result: success.
 
-The passing rules cover:
+Twelve Node tests passed and zero failed:
 
-- starting board;
-- relocation without mutation;
-- unrestricted equal-tier merge;
-- invalid-drop rejection;
-- Ogre-to-Relic transfer;
-- twin spawning;
-- last-space and full-board behavior;
-- save validation;
-- complete lineage progression.
+1. canonical atlas reconstruction and SHA;
+2. initial board;
+3. relocation;
+4. equal-tier merge;
+5. invalid-drop rejection;
+6. Ogre-to-Relic completion;
+7. twin spawning;
+8. last-space and full-board handling;
+9. save validation;
+10. complete lineage progression;
+11. relic singular and plural grammar;
+12. invalid and fractional relic-count normalization.
 
-## Verification not completed
+Browser matrix:
 
-Still unverified:
+- desktop Chromium at `1280 x 900`;
+- mobile WebKit at `430 x 932`, modeled on a large iPhone.
 
-- actual browser execution of the committed application;
-- exact atlas crop appearance in the running board;
-- board-scale silhouette separation;
-- drag animation timing on a real iPhone;
-- sound character on Cynthia's device;
-- dialog layout on iPhone;
-- persistence through a real browser reload;
-- Cynthia play testing;
-- hosted preview.
+Both browser projects passed the complete interaction sequence:
 
-A headless Chromium screenshot route was attempted twice in the implementation environment. Chromium initialized but did not complete screenshot capture. Under the repository failure rule, that mechanism will not be repeated without a materially different environment or method.
+- initial load;
+- atlas decode and visible-pixel inspection;
+- twenty-five board cells;
+- Codex open and close;
+- Hoard Chamber open and close;
+- sound toggle;
+- Spawner;
+- Undo;
+- reload persistence;
+- reset;
+- relocation;
+- equal-tier merge;
+- unequal-drop snap-back and ghost cleanup;
+- injected Ogre pair completion;
+- Relic Blossom transfer;
+- Hoard relic artwork and count;
+- final reset.
+
+No browser console error or page error occurred.
+
+Measured layout:
+
+- desktop board width: `638 px`;
+- desktop minimum cell dimension: `121.1875 px`;
+- mobile board width: `398 px` inside a `430 px` viewport;
+- mobile minimum cell dimension: `76.390625 px`;
+- horizontal overflow: none in either browser.
+
+## Direct visual inspection completed
+
+Final screenshots were inspected after the automated gate.
+
+Mobile first screen:
+
+- dark violet-black nocturnal field with restrained star and firefly flecks;
+- centered cream title and amber eyebrow;
+- Sound and Codex controls at the upper corners;
+- separate illustrated Goblin Spawner and Hoard Chamber cards;
+- a large, contained five-by-five gray stone board;
+- eight warm green Imps distributed across the board;
+- large Undo and Reset controls below;
+- readable instruction copy with no horizontal clipping.
+
+Codex:
+
+- parchment field inside a dark purple framed dialog;
+- large close control;
+- discovered Imp shown with artwork and description;
+- undiscovered lineage entries shown consistently and scrollably.
+
+Hoard Chamber:
+
+- parchment dialog with clean isolated Relic Blossom shrine artwork;
+- correct `1 Relic Blossom` singular copy in both the background card and dialog;
+- no adjacent Ogre slice or other atlas contamination.
+
+The desktop composition remains centered, restrained, and proportionate rather than stretching to fill the entire monitor.
+
+## Defects found and repaired during the gate
+
+1. Corrupted single-line Base64 atlas transport.
+   Repaired with four bounded transport parts plus executable integrity and runtime verification.
+
+2. Spawner, Hoard Chamber, and Relic Blossom crops included neighboring atlas fragments.
+   Repaired by tightening `atlas-map.json` and inspecting replacement screenshots.
+
+3. Background Hoard card said `1 Relic Blossoms`.
+   Repaired with `src/relicSummary.js` and unit coverage.
+
+The exact mechanisms and prevention rules are recorded as HAH-004 through HAH-006 in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
+
+## Test workflow state
+
+`.github/workflows/bounded-browser-smoke.yml` is retained but frozen to `workflow_dispatch` only.
+
+It will not run on ordinary commits or pull-request synchronization. A future expensive browser run requires an explicit manual dispatch.
+
+The workflow uses:
+
+- public-repository GitHub-hosted runner;
+- read-only contents permission;
+- twenty-minute timeout;
+- transient Playwright installation;
+- one-day artifact retention.
+
+## Preview and deployment state
+
+A dedicated zero-cost Netlify project named `hollow-and-hoard-preview` was created to avoid contaminating another site.
+
+No game deploy was created.
+
+The tested runtime artifact was generated successfully from the passing workflow, but this execution environment could not obtain the official `@netlify/mcp` package:
+
+- the internal npm mirror returned 404;
+- a materially different public-registry request timed out.
+
+The deployment route is recorded as HAH-006 and must not be repeated in this environment without a new mechanism. The site name or undeployed URL must not be handed to Cynthia as though it were live.
 
 ## Cost and external-state record
 
-- GitHub Actions dispatched: no.
-- External deployment created or changed: no.
-- Paid runner used: no.
-- Paid infrastructure used: no.
-- Paid API used: no.
-- Third-party stock asset introduced: no.
-- New runtime dependency introduced: no.
-- Possible cost introduced: no.
+- standard public-repository GitHub-hosted Actions used: yes, bounded and completed;
+- paid runner used: no;
+- paid infrastructure used: no;
+- paid API used: no;
+- production deployment created or changed: no;
+- game preview deployed: no;
+- pull request merged: no;
+- pull request marked ready: no;
+- third-party stock asset introduced: no;
+- possible cost introduced: no.
 
-## Next bounded task
+## Remaining acceptance gates
 
-The next gate is a real browser smoke test in a file-capable environment that can run the committed branch.
+Automated browser readiness is complete. Remaining before handoff to Cynthia:
 
-Required checks:
-
-1. load the committed static application;
-2. confirm the atlas decodes and every mapped crop is correct;
-3. inspect the complete first screen at ordinary and large iPhone dimensions;
-4. exercise relocation, merge, invalid snap-back, Spawner, Undo, Codex, Hoard Chamber, mute, reset, and reload persistence;
-5. describe the running visual result concretely for the blind owner;
-6. correct only defects revealed by that running inspection;
-7. do not generate a new broad art set;
-8. stop before deployment unless separately authorized.
+1. deploy the exact tested runtime through a working binary-capable or official Netlify route;
+2. smoke-test the resulting hosted URL on an actual iPhone;
+3. have Cynthia judge drag feel, movement satisfaction, sound comfort, pacing, visual delight, and whether she wants to keep playing;
+4. repair only defects demonstrated by hosted or Cynthia testing;
+5. keep draft PR 1 unmerged until those gates are explicitly accepted.
 
 ## Prohibited assumptions
 
 Do not assume:
 
-- the static scaffold has passed a browser smoke test;
-- the atlas crops are final at board scale;
-- the provisional assets are accepted production art;
-- visual attractiveness in still references guarantees satisfying movement;
-- repository setup authorizes Actions, deployment, publication, merge, or release;
-- a free-tier service may be created without explicit authorization;
+- automated mobile WebKit is equivalent to Cynthia's real-device judgment;
+- the blank Netlify project contains a live game;
+- the provisional assets are final production art;
+- a passing browser gate authorizes merge, production release, or handoff;
+- a free-tier service may be created or modified beyond the authorized isolated preview without explicit approval;
 - fresh generation is preferable to correcting the approved art.
