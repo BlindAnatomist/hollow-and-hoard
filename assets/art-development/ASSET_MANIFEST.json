@@ -1,0 +1,37 @@
+{
+  "repository": "BlindAnatomist/hollow-and-hoard",
+  "recorded": "2026-07-31",
+  "provenance": "Generated specifically for this project with authorized project tools; no third-party stock or copied game asset introduced. This is a technical record, not a legal opinion.",
+  "continuity_rule": "Use these sources for editing, extraction, compositing, and controlled variations before starting a fresh generation.",
+  "transport": "WebP bytes are stored as Base64 text because the current GitHub connector does not reliably preserve direct binary blob uploads. Decode without regeneration.",
+  "files": [
+    {
+      "transport_path": "assets/art-development/concepts/art-direction-bible.webp.base64",
+      "decoded_path": "assets/art-development/concepts/art-direction-bible.webp",
+      "decoded_bytes": 25352,
+      "decoded_sha256": "bbd93afc7c8ba3d990580729f6b49f97dd0fb9398a9f649f95b20ab6651484e8",
+      "dimensions": [512, 341],
+      "classification": "approved compact reference"
+    },
+    {
+      "transport_path": "assets/art-development/provisional/goblin-lineage-atlas.webp.base64",
+      "decoded_path": "assets/art-development/provisional/goblin-lineage-atlas.webp",
+      "decoded_bytes": 44234,
+      "decoded_sha256": "b3f4d7559abed3c8703ad765b5cc75a11abf7c94fd268974f8e8402df305ef88",
+      "dimensions": [768, 192],
+      "classification": "provisional production atlas"
+    },
+    {
+      "transport_path": "assets/art-development/provisional/world-elements-atlas.webp.base64",
+      "decoded_path": "assets/art-development/provisional/world-elements-atlas.webp",
+      "decoded_bytes": 38848,
+      "decoded_sha256": "9eff433c28ae6edcc33ed916949d54f597baf4705905d7cba035f278729bdef7",
+      "dimensions": [768, 192],
+      "classification": "provisional production atlas"
+    },
+    {
+      "path": "assets/art-development/provisional/atlas-map.json",
+      "classification": "atlas metadata"
+    }
+  ]
+}
