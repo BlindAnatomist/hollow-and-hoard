@@ -1,9 +1,9 @@
 name: Temporary encrypted Netlify preview upload
 
 on:
-  push:
+  pull_request:
     branches:
-      - art-direction-and-first-assets
+      - main
     paths:
       - ".github/workflows/temporary-netlify-preview-upload.yml"
 
