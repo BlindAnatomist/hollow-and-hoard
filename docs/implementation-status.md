@@ -12,172 +12,211 @@ Status date: 2026-07-31
 
 ## Project identity
 
-Hollow & Hoard is an independent nocturnal creature-merging game for Cynthia. It may inherit deliberately selected lessons from Moticos for Cynthia, but it remains separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
+Hollow & Hoard is an independent nocturnal creature-merging game for Cynthia. It inherits deliberately selected structural lessons from Moticos for Cynthia while remaining separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
 
 The authoritative working foundations are:
 
 - `docs/PROJECT_DEFINITION.md`
 - `docs/VISUAL_DIRECTION.md`
+- `docs/FIRST_PLAYABLE_ARCHITECTURE.md`
 
-## Current repository state
-
-The governance foundation consists of:
-
-- `README.md`
-- `AGENTS.md`
-- `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`
-- `docs/PREFLIGHT.md`
-- `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`
-- `docs/PROJECT_DEFINITION.md`
-- `docs/VISUAL_DIRECTION.md`
-- `docs/implementation-status.md`
-
-No application framework, package manager, workflow, deployment configuration, external service, or hosting target has yet been added.
-
-## Audience correction
+## Audience authority
 
 The game is for Cynthia, not for the owner.
 
-VoiceOver-specific operation is not a first-playable requirement. The owner remains project director and must receive inspected verbal descriptions of visual work. Cynthia is the acceptance authority for movement, artwork, sound, pacing, and delight.
+VoiceOver-specific operation is not a first-playable requirement. The owner remains project director and must receive inspected verbal descriptions of visual work. Cynthia is the acceptance authority for movement, artwork, sound comfort, pacing, and delight.
+
+## Current implementation
+
+A dependency-free static first-playable scaffold now exists.
+
+Project files include:
+
+- `index.html`
+- `package.json`
+- `package-lock.json`
+- `src/app.js`
+- `src/gameLogic.js`
+- `src/storage.js`
+- `src/atlas.js`
+- `src/audio.js`
+- `src/styles.css`
+- `tests/gameLogic.test.js`
+
+The scaffold uses native HTML, CSS, JavaScript ES modules, Pointer Events, Canvas sprite cropping, localStorage, native Web Audio, and the Node built-in test runner.
+
+No third-party runtime dependency, framework, package installation, build service, database, analytics system, or paid service is required.
+
+## Implemented first-playable behavior
+
+Implemented in code:
+
+- five-by-five board;
+- deterministic starting state with eight Imps;
+- direct drag threshold before movement begins;
+- floating drag copy;
+- restrained magnetic pull toward a matching creature;
+- relocation to any empty tile;
+- equal-tier merging anywhere on the board;
+- unequal and outside drops returning to origin;
+- Imp, Goblin, Hobgoblin, Troll, and Ogre progression;
+- two Ogres producing a Relic Blossom;
+- completed relic transfer to a separate Hoard Chamber while freeing both board spaces;
+- twin-Imp Spawner with full-board handling;
+- one-step Undo;
+- versioned local save and reset;
+- discovery Codex;
+- Hoard Chamber relic count;
+- sound mute;
+- low, rounded native sound cues;
+- reduced-motion behavior;
+- iPhone safe-area styling.
+
+Not included:
+
+- currency;
+- turn limit;
+- passive waiting timer;
+- shop patterns;
+- monetization;
+- Gargoyle family;
+- music;
+- cloud saves;
+- social features.
 
 ## Art-direction state
 
-The first broad concept pass established:
+Approved visual continuity includes:
 
-- the moonlit hollow;
-- warm goblin materials;
-- architectural gargoyle materials;
-- the Mosscap;
-- the gentle guardian Ogre;
-- parchment Codex treatment;
-- a carved stone board;
-- a separate glowing Hoard Chamber;
-- amber-versus-lavender lighting.
+- moonlit hollow setting;
+- warm lantern interiors against cool lavender-blue night;
+- Goblin Hollowkin lineage;
+- separate Relic Blossom shrine;
+- five-by-five carved stone board;
+- Goblin Spawner;
+- Hoard Chamber;
+- parchment Codex language;
+- restrained purple, moss, parchment, stone, and amber palette.
 
-The second refinement pass corrected:
+The approved compact art reference and provisional atlas remain under:
 
-- weak early goblin silhouette separation;
-- the gargoyle final form, turning it into a true relic;
-- an overcrowded and mechanically invented board interface;
-- generic mobile-game currency and shop language.
+- `assets/art-development/concepts/`
+- `assets/art-development/provisional/`
 
-The approved reference set is represented under:
+The application does not regenerate those images. It loads the exact committed Base64 WebP transport, verifies its expected dimensions, and crops individual sprites at runtime from `atlas-map.json`.
 
-`assets/art-development/concepts/`
-
-The first composited transparent production candidates are represented under:
-
-`assets/art-development/provisional/`
-
-They include the Goblin Hollowkin lineage, Relic Blossom, stone tile, Goblin Spawner, Hoard Chamber, and Codex treatment. These are provisional production candidates, not final accepted art.
+Generated words inside UI reference regions remain non-authoritative and are not used as final interface copy.
 
 ## Art continuity rule
 
-Future image work must use the approved references and extracted or composited assets as source material whenever possible.
+Future image work must begin from the approved references or preserved atlas whenever technically possible.
 
-Broad regeneration from scratch is not the default. New generation must answer a concrete missing requirement or an identified failure that cannot be corrected through editing, extraction, masking, or compositing.
+Use extraction, cropping, masking, compositing, scaling, color correction, or controlled editing before fresh generation. New broad image generation requires a concrete missing need or an explicit rejection of the current design.
 
-## Selected first playable
+## Architecture transfer from Moticos
 
-The selected first-playable family is the Goblin Hollowkin line.
+Inspected and deliberately inherited mechanisms:
 
-The working first-playable scope is:
+- pure game logic separated from rendering;
+- board interaction isolated from state rules;
+- Pointer Events for touch and mouse;
+- six-pixel drag threshold;
+- floating drag copy with subdued source;
+- magnetic attraction toward valid matching pieces;
+- short snap-back for invalid drops;
+- one complete previous-state snapshot for Undo;
+- pure rule tests;
+- safe-area-aware iPhone layout.
 
-- one five-by-five board;
-- direct drag relocation;
-- merge identical creatures anywhere on the board;
-- one Spawner;
-- one Relic Blossom completion;
-- one minimal Codex section;
-- one minimal Hoard Chamber;
-- save and reset;
-- undo when technically practical;
-- gentle representative sound;
-- no currency;
-- no turn limit;
-- no passive waiting timer;
-- no deployment without separate authorization.
+Not copied:
 
-## Concept source status
+- Moticos source files;
+- collage mechanics;
+- artwork;
+- terminology;
+- rewards;
+- postcard system;
+- Tone.js audio implementation;
+- route structure.
 
-The originating Claude React prototype remains concept evidence rather than production architecture.
-
-Useful inherited ideas:
-
-- title and nocturnal setting;
-- creature bloodlines;
-- discovery Codex;
-- board and merge concept;
-- firefly ambience.
-
-Not automatically accepted:
-
-- six-by-six board;
-- tap-only movement;
-- adjacency-limited merging;
-- six-second spawning cooldowns;
-- Claude-specific `window.storage`;
-- procedural SVG artwork;
-- completed objects that clog the board.
-
-## Zero-dollar position
-
-Current cost state:
-
-- no paid runner;
-- no paid infrastructure;
-- no paid API;
-- no external deployment;
-- no purchased asset;
-- no subscription;
-- no billable service;
-- no GitHub Actions workflow.
-
-The art references and provisional assets were generated and processed within the available project tools. No third-party stock asset was introduced.
-
-## Current verification
+## Verification completed
 
 Completed:
 
-- direct inspection of the concept and refinement passes;
-- owner authorization of the accepted corrections;
-- transparent-background verification for extracted provisional components;
+- direct inspection of the broad and refined art passes;
+- owner authorization of the accepted visual corrections;
 - preservation of visual continuity through an art bible, asset manifest, and atlas metadata;
-- incident records for unexplained image output, continuity loss, and invented game systems.
+- atlas transport committed with recorded decoded size and SHA-256;
+- architecture plan committed;
+- dependency-free package and lock metadata committed;
+- pure game logic executed with Node `22.16.0`;
+- nine rule tests passed;
+- no rule test failed;
+- superseded controller removed so only `src/app.js` is active;
+- entry page points to the corrected delegated-pointer controller.
 
-Not yet completed:
+The passing rules cover:
 
-- transfer verification for the playable atlas bytes;
-- board-scale silhouette testing in a running application;
-- animation testing;
+- starting board;
+- relocation without mutation;
+- unrestricted equal-tier merge;
+- invalid-drop rejection;
+- Ogre-to-Relic transfer;
+- twin spawning;
+- last-space and full-board behavior;
+- save validation;
+- complete lineage progression.
+
+## Verification not completed
+
+Still unverified:
+
+- actual browser execution of the committed application;
+- exact atlas crop appearance in the running board;
+- board-scale silhouette separation;
+- drag animation timing on a real iPhone;
+- sound character on Cynthia's device;
+- dialog layout on iPhone;
+- persistence through a real browser reload;
 - Cynthia play testing;
-- sound implementation;
-- save-state testing;
-- production build;
 - hosted preview.
+
+A headless Chromium screenshot route was attempted twice in the implementation environment. Chromium initialized but did not complete screenshot capture. Under the repository failure rule, that mechanism will not be repeated without a materially different environment or method.
+
+## Cost and external-state record
+
+- GitHub Actions dispatched: no.
+- External deployment created or changed: no.
+- Paid runner used: no.
+- Paid infrastructure used: no.
+- Paid API used: no.
+- Third-party stock asset introduced: no.
+- New runtime dependency introduced: no.
+- Possible cost introduced: no.
 
 ## Next bounded task
 
-Complete the art transport, then create the first application scaffold on the active development branch:
+The next gate is a real browser smoke test in a file-capable environment that can run the committed branch.
 
-1. verify that the provisional atlas bytes decode to the recorded hashes;
-2. choose a minimal static web stack suitable for touch dragging;
-3. implement a five-by-five board;
-4. load the preserved Goblin Hollowkin assets;
-5. implement relocation and identical-pair merging;
-6. implement Spawner, Relic Blossom transfer, Codex, and Hoard Chamber placeholders;
-7. add only the minimum local checks required by the chosen stack;
-8. stop before deployment;
-9. inspect the running layout at actual iPhone scale before generating additional art.
+Required checks:
+
+1. load the committed static application;
+2. confirm the atlas decodes and every mapped crop is correct;
+3. inspect the complete first screen at ordinary and large iPhone dimensions;
+4. exercise relocation, merge, invalid snap-back, Spawner, Undo, Codex, Hoard Chamber, mute, reset, and reload persistence;
+5. describe the running visual result concretely for the blind owner;
+6. correct only defects revealed by that running inspection;
+7. do not generate a new broad art set;
+8. stop before deployment unless separately authorized.
 
 ## Prohibited assumptions
 
 Do not assume:
 
-- the Claude prototype should become the application entry point;
-- Moticos code or assets should be copied;
-- new images should replace approved images merely because generation is available;
-- the provisional assets are final;
-- repository setup authorizes Actions, deployment, publication, or release;
-- free-tier availability authorizes creation of an external service;
-- visual attractiveness in a still image guarantees good movement or Cynthia's acceptance.
+- the static scaffold has passed a browser smoke test;
+- the atlas crops are final at board scale;
+- the provisional assets are accepted production art;
+- visual attractiveness in still references guarantees satisfying movement;
+- repository setup authorizes Actions, deployment, publication, merge, or release;
+- a free-tier service may be created without explicit authorization;
+- fresh generation is preferable to correcting the approved art.
