@@ -1,0 +1,134 @@
+name: Temporary encrypted Netlify preview upload
+
+on:
+  push:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/temporary-netlify-preview-upload.yml"
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+
+concurrency:
+  group: hollow-and-hoard-temporary-netlify-preview
+  cancel-in-progress: true
+
+jobs:
+  upload:
+    name: Upload exact tested runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_ID: 8f57b10c-7186-4e40-b7cc-4f7012f08995
+      PR_NUMBER: "1"
+      TESTED_ARTIFACT_ID: "8813214626"
+      TESTED_ARTIFACT_SHA256: 76d336f71dd6154fc0bde5fe5dd46cb9b917a315b9854552e5f1b1929d3a33fa
+
+    steps:
+      - name: Generate ephemeral encryption key
+        run: |
+          umask 077
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out /tmp/netlify-relay-private.pem 2>/dev/null
+          openssl pkey -in /tmp/netlify-relay-private.pem -pubout -out netlify-relay-public.pem 2>/dev/null
+
+      - name: Publish public key only
+        uses: actions/upload-artifact@v4
+        with:
+          name: netlify-ephemeral-public-key
+          path: netlify-relay-public.pem
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Receive and decrypt bounded credential
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +x
+          body=""
+          for attempt in {1..120}; do
+            body=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+              --jq '[.[] | select(.body | startswith("NETLIFY_PROXY_CIPHERTEXT_V1\n"))] | last | .body // ""' 2>/dev/null || true)
+            if [[ -n "$body" ]]; then
+              break
+            fi
+            sleep 5
+          done
+          if [[ -z "$body" ]]; then
+            echo "No encrypted deployment credential arrived within the bounded polling window." >&2
+            exit 1
+          fi
+
+          : > /tmp/netlify-proxy-base
+          printf '%s\n' "$body" | tail -n +2 | sed '/^[[:space:]]*$/d' > /tmp/netlify-ciphertext-chunks.txt
+          chunk_count=0
+          while IFS= read -r chunk; do
+            chunk_count=$((chunk_count + 1))
+            printf '%s' "$chunk" | base64 --decode > "/tmp/netlify-chunk-${chunk_count}.bin"
+            openssl pkeyutl -decrypt \
+              -inkey /tmp/netlify-relay-private.pem \
+              -in "/tmp/netlify-chunk-${chunk_count}.bin" \
+              -pkeyopt rsa_padding_mode:oaep \
+              -pkeyopt rsa_oaep_md:sha256 \
+              -pkeyopt rsa_mgf1_md:sha256 \
+              >> /tmp/netlify-proxy-base
+          done < /tmp/netlify-ciphertext-chunks.txt
+          if [[ "$chunk_count" -lt 1 || ! -s /tmp/netlify-proxy-base ]]; then
+            echo "The encrypted deployment credential could not be reconstructed." >&2
+            exit 1
+          fi
+          rm -f /tmp/netlify-chunk-*.bin /tmp/netlify-ciphertext-chunks.txt netlify-relay-public.pem
+
+      - name: Retrieve exact tested runtime artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${TESTED_ARTIFACT_ID}/zip" > tested-preview-runtime.zip
+          echo "${TESTED_ARTIFACT_SHA256}  tested-preview-runtime.zip" | sha256sum --check --strict
+
+      - name: Upload and verify preview deployment
+        run: |
+          set +x
+          proxy_base=$(cat /tmp/netlify-proxy-base)
+          upload_url="${proxy_base}/api/v1/sites/${SITE_ID}/builds"
+          response=$(curl --fail --silent --show-error --location \
+            --max-time 180 \
+            -H 'User-Agent: netlify-mcp' \
+            -F 'zip=@tested-preview-runtime.zip;type=application/zip' \
+            "$upload_url")
+          deploy_id=$(printf '%s' "$response" | python3 -c 'import json,sys; data=json.load(sys.stdin); data=data[0] if isinstance(data,list) else data; print(data.get("deploy_id", ""))')
+          if [[ -z "$deploy_id" ]]; then
+            echo "Netlify did not return a deployment identifier." >&2
+            exit 1
+          fi
+
+          deploy_url="${proxy_base}/api/v1/deploys/${deploy_id}"
+          for attempt in {1..120}; do
+            deploy=$(curl --fail --silent --show-error --location --max-time 30 "$deploy_url")
+            state=$(printf '%s' "$deploy" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("state", ""))')
+            if [[ "$state" == "ready" ]]; then
+              site_url=$(printf '%s' "$deploy" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("ssl_url") or d.get("url") or "")')
+              echo "Preview deployment is ready: ${site_url}"
+              printf '%s\n' "$site_url" > preview-site-url.txt
+              rm -f /tmp/netlify-proxy-base /tmp/netlify-relay-private.pem tested-preview-runtime.zip
+              exit 0
+            fi
+            if [[ "$state" == "error" || "$state" == "rejected" ]]; then
+              echo "Netlify preview deployment ended in state: ${state}" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          echo "Netlify preview deployment did not reach ready state within the bounded polling window." >&2
+          exit 1
+
+      - name: Preserve safe deployment result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hollow-and-hoard-preview-result
+          path: preview-site-url.txt
+          if-no-files-found: error
+          retention-days: 1
