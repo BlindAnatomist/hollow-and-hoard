@@ -39,7 +39,7 @@ jobs:
       - name: Reset worktree to clean Version 2 plan
         run: git reset --hard "${CLEAN_PARENT}"
 
-      - name: Receive bounded import chunks
+      - name: Receive and diagnose bounded import chunks
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -47,22 +47,30 @@ jobs:
           : > /tmp/hollow-v2.b64
           for number in $(seq -w 1 "${CHUNK_COUNT}"); do
             prefix="V2_IMPORT_CHUNK_${number}_OF_${CHUNK_COUNT}"
-            body=""
-            for attempt in {1..120}; do
-              body=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate \
-                --jq "[.[] | select(.body | startswith(\"${prefix}\\n\"))] | last | .body // \"\"" 2>/dev/null || true)
-              if [[ -n "${body}" ]]; then
-                break
-              fi
-              sleep 5
-            done
+            body=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate \
+              --jq "[.[] | select(.body | startswith(\"${prefix}\\n\"))] | last | .body // \"\"" 2>/dev/null || true)
             if [[ -z "${body}" ]]; then
               echo "Missing ${prefix}." >&2
               exit 1
             fi
-            printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n' >> /tmp/hollow-v2.b64
+
+            payload=$(printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n')
+            actual_length=$(printf '%s' "${payload}" | wc -c)
+            expected_length=12000
+            if [[ "${number}" == "11" ]]; then
+              expected_length=820
+            fi
+            echo "Chunk ${number}: ${actual_length} characters; expected ${expected_length}."
+            if [[ "${actual_length}" -ne "${expected_length}" ]]; then
+              echo "Length mismatch in ${prefix}." >&2
+              exit 1
+            fi
+            printf '%s' "${payload}" >> /tmp/hollow-v2.b64
           done
-          test "$(wc -c < /tmp/hollow-v2.b64)" -eq "${EXPECTED_BASE64_CHARS}"
+
+          total_length=$(wc -c < /tmp/hollow-v2.b64)
+          echo "Combined Base64: ${total_length} characters; expected ${EXPECTED_BASE64_CHARS}."
+          test "${total_length}" -eq "${EXPECTED_BASE64_CHARS}"
 
       - name: Verify and extract exact package
         run: |
