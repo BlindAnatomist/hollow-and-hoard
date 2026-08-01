@@ -1,18 +1,6 @@
 name: Bounded browser smoke
 
 on:
-  push:
-    branches:
-      - art-direction-and-first-assets
-    paths:
-      - ".github/workflows/bounded-browser-smoke.yml"
-      - "tests/browser-smoke.mjs"
-      - "tests/gameLogic.test.js"
-      - "index.html"
-      - "src/**"
-      - "assets/art-development/provisional/**"
-      - "package.json"
-      - "package-lock.json"
   pull_request:
     branches:
       - main
@@ -25,7 +13,6 @@ on:
       - "assets/art-development/provisional/**"
       - "package.json"
       - "package-lock.json"
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -75,6 +62,23 @@ jobs:
         env:
           SMOKE_BASE_URL: http://127.0.0.1:4173
         run: node tests/browser-smoke.mjs
+
+      - name: Stage tested preview runtime
+        run: |
+          mkdir -p preview-runtime/assets/art-development/provisional
+          cp index.html preview-runtime/
+          cp -R src preview-runtime/src
+          cp assets/art-development/provisional/atlas-map.json preview-runtime/assets/art-development/provisional/
+          cp assets/art-development/provisional/first-playable-atlas.webp.base64.part-* preview-runtime/assets/art-development/provisional/
+          printf '%s\n' "${GITHUB_SHA}" > preview-runtime/PREVIEW_COMMIT.txt
+
+      - name: Upload tested preview runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: hollow-and-hoard-tested-preview-runtime
+          path: preview-runtime
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Upload bounded smoke evidence
         if: always()
