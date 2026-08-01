@@ -1,0 +1,76 @@
+name: Bounded browser smoke
+
+on:
+  push:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/bounded-browser-smoke.yml"
+      - "tests/browser-smoke.mjs"
+      - "tests/gameLogic.test.js"
+      - "index.html"
+      - "src/**"
+      - "assets/art-development/provisional/**"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hollow-and-hoard-bounded-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Rules and browser smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out exact branch commit
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run pure game rules
+        run: npm test
+
+      - name: Install transient Playwright test tooling
+        run: npm install --no-save --package-lock=false --ignore-scripts @playwright/test@1.61.1
+
+      - name: Install bounded browser engines
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 > test-server.log 2>&1 &
+          echo $! > test-server.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat test-server.log
+          exit 1
+
+      - name: Run browser and iPhone-sized smoke test
+        env:
+          SMOKE_BASE_URL: http://127.0.0.1:4173
+        run: node tests/browser-smoke.mjs
+
+      - name: Upload bounded smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hollow-and-hoard-browser-smoke
+          path: |
+            test-output/browser-smoke
+            test-server.log
+          if-no-files-found: warn
+          retention-days: 1
