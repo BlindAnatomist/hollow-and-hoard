@@ -11,8 +11,9 @@ Before changing the repository:
 3. Read `docs/PREFLIGHT.md`.
 4. Read `docs/implementation-status.md`.
 5. Read `docs/PROJECT_DEFINITION.md`.
-6. Read the relevant entries in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
-7. Inspect the current implementation and preserve behavior already recorded as accepted unless the assignment explicitly changes it.
+6. Read `docs/VISUAL_DIRECTION.md`.
+7. Read the relevant entries in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
+8. Inspect the current implementation and preserve behavior and visual decisions already recorded as accepted unless the assignment explicitly changes them.
 
 Do not rely on conversation history alone when the repository can establish the current state.
 
@@ -42,22 +43,49 @@ Treat each assignment as bounded.
 - Do not import the Claude concept prototype as production architecture without review.
 - When instructions conflict, stop before an irreversible action and identify the conflict.
 
-## Accessibility authority
+## Player and product authority
 
-Accessibility is part of functional correctness, not a later enhancement.
+Hollow & Hoard is a game for Cynthia.
 
-- Preserve semantic HTML and native controls whenever possible.
-- Give every interactive control an accurate accessible name, role, state, and usable focus order.
-- Do not duplicate long instructions inside control names when adjacent text already provides them.
-- Make game state, available actions, selections, merges, discoveries, blocked actions, and recovery paths available without visual inference.
-- Do not require color, animation, spatial position, drag precision, or timed visual recognition as the only way to understand or operate the game.
-- Drag interaction must have an equally complete accessible operation model.
-- Automated accessibility checks supplement rather than replace real-device VoiceOver testing.
-- Record the exact point at which owner-operated iPhone testing becomes necessary.
+The primary design authority is her visual, tactile, aesthetic, pacing, and sound experience. VoiceOver-specific controls and nonvisual board operation are not first-playable requirements unless the owner explicitly adds them later.
+
+Do not make owner-operated VoiceOver testing a release gate for this game. The owner remains the project director and authorization authority, but Cynthia is the acceptance authority for play feel, beauty, movement, sound comfort, pacing, and delight.
+
+Maintain ordinary web quality:
+
+- use stable controls and predictable interaction;
+- avoid unnecessary motion and provide reduced-motion behavior where practical;
+- preserve readable contrast and text sizing;
+- do not create avoidable keyboard or touch traps;
+- keep instructions and error states understandable.
+
+These are baseline product standards, not a requirement to build a separate screen-reader version of the game.
+
+## Visual-development continuity
+
+Approved visual work is source material, not disposable inspiration.
+
+Before generating or changing art:
+
+1. Inspect the currently approved concept references and asset manifest.
+2. Identify the exact element being preserved, extracted, corrected, or extended.
+3. Prefer editing, masking, cropping, compositing, style transfer, or asset extraction over starting from a blank prompt.
+4. Generate from scratch only when no approved source can support the required result or when the assignment explicitly calls for a new direction.
+5. Record why a fresh generation was necessary.
+6. Preserve the strongest existing design decisions even when correcting a local flaw.
+
+Every completed image pass must be followed by:
+
+- direct inspection of the result;
+- a concrete verbal description for the blind owner;
+- a judgment about what succeeded, what failed, and what should carry forward;
+- a clear classification as exploratory reference, approved reference, provisional production asset, or accepted production asset.
+
+Text rendered inside generated images is never authoritative game copy. Recreate final text in code or controlled design assets.
 
 ## Cynthia experience authority
 
-The intended player experience must preserve the established preferences recorded in `docs/PROJECT_DEFINITION.md`, including:
+The intended player experience must preserve the established preferences recorded in `docs/PROJECT_DEFINITION.md` and `docs/VISUAL_DIRECTION.md`, including:
 
 - satisfying movement and dragging;
 - beautiful but uncluttered presentation;
@@ -79,7 +107,7 @@ Do not claim these qualities are accepted until Cynthia has actually tested the 
 
 ## Failure and transport rule
 
-When a connector, transfer path, command, workflow, or deployment mechanism fails twice for the same confirmed reason, stop repeating that mechanism and change methods. Preserve exact source fidelity, but do not confuse fidelity with loyalty to a failed transport route.
+When a connector, transfer path, command, workflow, image-edit route, or deployment mechanism fails twice for the same confirmed reason, stop repeating that mechanism and change methods. Preserve exact source fidelity, but do not confuse fidelity with loyalty to a failed transport route.
 
 Manual reconstruction of large files from overlapping fragments is prohibited when a safer source-preserving route exists.
 
@@ -90,6 +118,7 @@ At the end of a repository assignment, report:
 - the exact branch and final commit;
 - files changed;
 - checks run and their results;
+- art references or production assets created, reused, edited, extracted, or rejected;
 - Actions or deployments triggered, if any;
 - anything intentionally left unchanged;
 - the next bounded step and whether it requires owner or Cynthia testing or authorization.
