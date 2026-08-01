@@ -14,24 +14,21 @@
       "classification": "approved compact reference"
     },
     {
-      "transport_path": "assets/art-development/provisional/goblin-lineage-atlas.webp.base64",
-      "decoded_path": "assets/art-development/provisional/goblin-lineage-atlas.webp",
-      "decoded_bytes": 44234,
-      "decoded_sha256": "b3f4d7559abed3c8703ad765b5cc75a11abf7c94fd268974f8e8402df305ef88",
-      "dimensions": [768, 192],
-      "classification": "provisional production atlas"
-    },
-    {
-      "transport_path": "assets/art-development/provisional/world-elements-atlas.webp.base64",
-      "decoded_path": "assets/art-development/provisional/world-elements-atlas.webp",
-      "decoded_bytes": 38848,
-      "decoded_sha256": "9eff433c28ae6edcc33ed916949d54f597baf4705905d7cba035f278729bdef7",
-      "dimensions": [768, 192],
-      "classification": "provisional production atlas"
+      "transport_path": "assets/art-development/provisional/first-playable-atlas.webp.base64",
+      "decoded_path": "assets/art-development/provisional/first-playable-atlas.webp",
+      "decoded_bytes": 27118,
+      "decoded_sha256": "f460c77a7caec6e8d6b92f1cf847a6758128e901797dfc6f81cf2d18dd2a04d8",
+      "dimensions": [384, 256],
+      "classification": "provisional compact first-playable atlas"
     },
     {
       "path": "assets/art-development/provisional/atlas-map.json",
       "classification": "atlas metadata"
     }
-  ]
+  ],
+  "superseded_transport_plan": [
+    "assets/art-development/provisional/goblin-lineage-atlas.webp.base64",
+    "assets/art-development/provisional/world-elements-atlas.webp.base64"
+  ],
+  "superseded_reason": "The compact first-playable atlas preserves the approved extracted work in one smaller transfer and avoids regenerating or separately retransmitting the same designs."
 }
