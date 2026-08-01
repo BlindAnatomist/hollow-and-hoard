@@ -13,6 +13,18 @@ on:
       - "assets/art-development/provisional/**"
       - "package.json"
       - "package-lock.json"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bounded-browser-smoke.yml"
+      - "tests/browser-smoke.mjs"
+      - "tests/gameLogic.test.js"
+      - "index.html"
+      - "src/**"
+      - "assets/art-development/provisional/**"
+      - "package.json"
+      - "package-lock.json"
   workflow_dispatch:
 
 permissions:
