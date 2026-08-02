@@ -1,0 +1,42 @@
+{
+  "repository": "BlindAnatomist/hollow-and-hoard",
+  "recorded": "2026-07-31",
+  "provenance": "Generated specifically for this project with authorized project tools; no third-party stock or copied game asset introduced. This is a technical record, not a legal opinion.",
+  "continuity_rule": "Use these sources for editing, extraction, compositing, and controlled variations before starting a fresh generation.",
+  "transport": "WebP bytes are stored as bounded Base64 text parts because the GitHub connector can truncate very long single-line text values. Concatenate the listed parts in order and decode without regeneration.",
+  "files": [
+    {
+      "transport_path": "assets/art-development/concepts/art-direction-bible.webp.base64",
+      "decoded_path": "assets/art-development/concepts/art-direction-bible.webp",
+      "decoded_bytes": 25352,
+      "decoded_sha256": "bbd93afc7c8ba3d990580729f6b49f97dd0fb9398a9f649f95b20ab6651484e8",
+      "dimensions": [512, 341],
+      "classification": "approved compact reference"
+    },
+    {
+      "transport_parts": [
+        "assets/art-development/provisional/first-playable-atlas.webp.base64.part-01",
+        "assets/art-development/provisional/first-playable-atlas.webp.base64.part-02",
+        "assets/art-development/provisional/first-playable-atlas.webp.base64.part-03",
+        "assets/art-development/provisional/first-playable-atlas.webp.base64.part-04"
+      ],
+      "transport_part_characters": 9040,
+      "transport_total_characters": 36160,
+      "decoded_path": "assets/art-development/provisional/first-playable-atlas.webp",
+      "decoded_bytes": 27118,
+      "decoded_sha256": "f460c77a7caec6e8d6b92f1cf847a6758128e901797dfc6f81cf2d18dd2a04d8",
+      "dimensions": [384, 256],
+      "classification": "provisional compact first-playable atlas"
+    },
+    {
+      "path": "assets/art-development/provisional/atlas-map.json",
+      "classification": "atlas metadata"
+    }
+  ],
+  "superseded_transport_plan": [
+    "assets/art-development/provisional/goblin-lineage-atlas.webp.base64",
+    "assets/art-development/provisional/world-elements-atlas.webp.base64",
+    "assets/art-development/provisional/first-playable-atlas.webp.base64"
+  ],
+  "superseded_reason": "The compact atlas preserves the approved extracted work without regeneration. The four-part transport replaces the corrupted single-line transfer and is verified by tests/assetIntegrity.test.js."
+}

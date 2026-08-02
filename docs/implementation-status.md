@@ -6,146 +6,303 @@ Visibility: public
 
 Default branch: `main`
 
+Active development branch: `art-direction-and-first-assets`
+
+Draft pull request: `#1`
+
 Status date: 2026-07-31
 
 ## Project identity
 
-Hollow & Hoard is an independent nocturnal creature-merging game. It may inherit deliberately selected lessons from Moticos for Cynthia, but it must remain separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
+Hollow & Hoard is an independent nocturnal creature-merging game for Cynthia. It inherits deliberately selected structural lessons from Moticos for Cynthia while remaining separate in code, assets, vocabulary, history, visual identity, sound design, and progression.
 
-The authoritative working design foundation is `docs/PROJECT_DEFINITION.md`.
+The authoritative working foundations are:
 
-## Current accepted repository state
-
-The public repository has been created under the accepted name:
-
-`hollow-and-hoard`
-
-The initial governance and definition foundation consists of:
-
-- `README.md`
-- `AGENTS.md`
-- `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`
-- `docs/PREFLIGHT.md`
-- `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`
 - `docs/PROJECT_DEFINITION.md`
-- `docs/implementation-status.md`
+- `docs/VISUAL_DIRECTION.md`
+- `docs/FIRST_PLAYABLE_ARCHITECTURE.md`
+- `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`
 
-No application code, package manager, dependency, workflow, deployment configuration, external service, paid asset, or hosting target has been added.
+## Audience authority
 
-## Concept source status
+The game is for Cynthia, not for the owner.
 
-The originating Claude React prototype was supplied in conversation and assessed as concept evidence rather than accepted production architecture.
+VoiceOver-specific operation is not a first-playable requirement. The owner remains project director and must receive inspected verbal descriptions of visual work. Cynthia is the acceptance authority for movement, artwork, sound comfort, pacing, and delight.
 
-Its useful elements include:
+## Current implementation
 
-- the title and nocturnal setting;
-- goblin and gargoyle bloodlines;
-- a discovery Codex;
-- procedural creature placeholders;
-- a board, merge operation, timed spawning, and save concept.
+A dependency-free static first-playable exists on the active development branch.
 
-Its unresolved or rejected-as-automatic elements include:
+Primary files:
 
-- tap-only movement rather than satisfying drag;
-- Claude-specific `window.storage` persistence;
-- passive six-second cooldowns;
-- adjacency rules combined with unrestricted relocation;
-- completed blossoms that can occupy board space permanently;
-- no actual Hoard Chamber or relic system;
-- placeholder rather than final artwork and sound.
+- `index.html`
+- `src/app.js`
+- `src/gameLogic.js`
+- `src/storage.js`
+- `src/atlas.js`
+- `src/audio.js`
+- `src/relicSummary.js`
+- `src/styles.css`
+- `tests/gameLogic.test.js`
+- `tests/assetIntegrity.test.js`
+- `tests/relicSummary.test.js`
+- `tests/browser-smoke.mjs`
 
-The exact prototype source has not yet been committed. It must be preserved through a clearly marked reference path before implementation if it is needed as an active source reference.
+The application uses native HTML, CSS, JavaScript ES modules, Pointer Events, Canvas sprite cropping, localStorage, native Web Audio, and the Node built-in test runner.
 
-## Zero-dollar position
+No third-party runtime dependency, framework, database, analytics system, paid API, or paid service is required. Playwright is installed only transiently inside the bounded manual test workflow.
 
-The repository is governed by `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`.
+## Implemented first-playable behavior
 
-Current cost state:
+Implemented and browser-tested:
 
-- no paid runner;
-- no paid infrastructure;
-- no paid API;
-- no external deployment;
-- no purchased asset;
-- no subscription;
-- no billable service;
-- no GitHub Actions workflow.
+- five-by-five board;
+- deterministic starting state with eight Imps;
+- six-pixel drag threshold;
+- floating drag copy with subdued source;
+- restrained magnetic pull toward a valid matching creature;
+- relocation to any empty tile;
+- equal-tier merging anywhere on the board;
+- unequal and outside drops returning to origin;
+- Imp, Goblin, Hobgoblin, Troll, and Ogre progression;
+- two Ogres producing a Relic Blossom;
+- completed relic transfer to a separate Hoard Chamber while freeing both board spaces;
+- twin-Imp Spawner with last-space and full-board handling;
+- one-step Undo;
+- versioned local save and reset;
+- persistence through browser reload;
+- discovery Codex;
+- Hoard Chamber relic count with correct singular and plural grammar;
+- sound mute;
+- low, rounded native sound cues;
+- reduced-motion behavior;
+- iPhone safe-area styling.
 
-Standard GitHub-hosted Actions may be considered later only when confirmed zero-dollar for this public repository, the technical stack is known, and a bounded assignment establishes the exact checks.
+Not included:
 
-## Accessibility position
+- currency;
+- turn limit;
+- passive waiting timer;
+- shop patterns;
+- monetization;
+- Gargoyle family;
+- music;
+- cloud saves;
+- social features.
 
-Accessibility is part of the first implementation, not a later repair phase.
+## Art and asset state
 
-The game must support reliable iPhone VoiceOver operation, including:
+Approved visual continuity includes:
 
-- concise names and nonduplicative descriptions;
-- logical reading and focus order;
-- complete nonvisual access to board and game state;
-- an accessible operation equivalent to dragging that uses the same rules;
-- clear merge, discovery, failure, and recovery feedback;
-- no dependence on color, animation, spatial position, sound, or drag precision alone;
-- real-device VoiceOver testing at defined checkpoints.
+- moonlit hollow setting;
+- warm lantern interiors against cool lavender-blue night;
+- Goblin Hollowkin lineage;
+- separate Relic Blossom shrine;
+- five-by-five carved stone board;
+- Goblin Spawner;
+- Hoard Chamber;
+- parchment Codex language;
+- restrained purple, moss, parchment, stone, and amber palette.
 
-## Player-experience position
+The application does not regenerate the approved artwork. It reconstructs the canonical compact WebP atlas from four bounded Base64 parts, verifies its byte count, WebP signatures, SHA-256, and dimensions, then crops individual sprites at runtime from `atlas-map.json`.
 
-Cynthia's prior testing establishes design evidence, not automatic acceptance of this game.
+Canonical atlas record:
 
-The first playable must pursue:
+- Base64 characters: `36,160`;
+- decoded bytes: `27,118`;
+- dimensions: `384 x 256`;
+- SHA-256: `f460c77a7caec6e8d6b92f1cf847a6758128e901797dfc6f81cf2d18dd2a04d8`.
 
-- satisfying movement;
-- uncluttered beauty;
-- gentle sound without painful high-frequency effects;
-- meaningful progression;
-- advanced forms that become more distinctive and composed rather than simply larger or busier.
+Screenshot inspection found and corrected overly generous crop rectangles. The final Spawner, Hoard Chamber, and Relic Blossom crops contain no neighboring atlas fragments. The tightened creature rectangles also improve Imp scale and clarity on the board.
 
-Cynthia's direct testing is required before those qualities can be marked accepted.
+Future image work must begin from the approved references or preserved atlas whenever technically possible. Use extraction, cropping, masking, compositing, scaling, color correction, or controlled editing before fresh generation.
 
-## Recorded incidents
+## Architecture transfer from Moticos
 
-No Hollow & Hoard-specific implementation incident has yet occurred.
+Inspected and deliberately inherited mechanisms:
 
-General proven standards and future incident records belong in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
+- pure game logic separated from rendering;
+- board interaction isolated from state rules;
+- Pointer Events for touch and mouse;
+- six-pixel drag threshold;
+- floating drag copy with subdued source;
+- magnetic attraction toward valid matching pieces;
+- short snap-back for invalid drops;
+- one complete previous-state snapshot for Undo;
+- pure rule tests;
+- safe-area-aware iPhone layout.
 
-## Unresolved implementation decisions
+Not copied:
 
-Before application code is scaffolded, establish:
+- Moticos source files;
+- collage mechanics;
+- artwork;
+- terminology;
+- rewards;
+- postcard system;
+- Tone.js audio implementation;
+- route structure.
 
-1. exact board dimensions;
-2. movement, adjacency, relocation, and merge rules;
-3. first bloodline and final relic;
-4. spawning and crowding behavior;
-5. Hoard Chamber transition and environmental consequence;
-6. undo, reset, and recovery behavior;
-7. technical stack and package manager;
-8. save system and schema;
-9. artwork method and licensing;
-10. sound method and safe temporary sound set;
-11. test strategy;
-12. first VoiceOver acceptance checkpoint;
-13. hosted preview mechanism, only after separate authorization.
+## Automated verification completed
 
-## Next bounded task
+Final successful bounded browser gate:
 
-Perform the first implementation-planning pass:
+- workflow run: `30683744112`;
+- job: `91325784930`;
+- application branch source through commit: `643833c93b872e32d4c7e5fea5012c8b0fa95a43`;
+- tested pull-request merge commit: `2bded6ebf4750d3fea405cc702b6b69c6e3d3438`;
+- result: success.
 
-1. inspect the Moticos repository only for deliberate transferable technical and accessibility lessons;
-2. inspect its current package structure and testing approach without copying its game code or assets;
-3. choose the smallest suitable zero-dollar stack;
-4. define the first playable state machine and acceptance tests;
-5. preserve the Claude prototype as a clearly marked reference if needed;
-6. scaffold the application on a bounded development branch;
-7. add only the minimum checks required by the chosen stack;
-8. stop before deployment until the owner explicitly authorizes a hosted preview.
+Twelve Node tests passed and zero failed:
+
+1. canonical atlas reconstruction and SHA;
+2. initial board;
+3. relocation;
+4. equal-tier merge;
+5. invalid-drop rejection;
+6. Ogre-to-Relic completion;
+7. twin spawning;
+8. last-space and full-board handling;
+9. save validation;
+10. complete lineage progression;
+11. relic singular and plural grammar;
+12. invalid and fractional relic-count normalization.
+
+Browser matrix:
+
+- desktop Chromium at `1280 x 900`;
+- mobile WebKit at `430 x 932`, modeled on a large iPhone.
+
+Both browser projects passed the complete interaction sequence:
+
+- initial load;
+- atlas decode and visible-pixel inspection;
+- twenty-five board cells;
+- Codex open and close;
+- Hoard Chamber open and close;
+- sound toggle;
+- Spawner;
+- Undo;
+- reload persistence;
+- reset;
+- relocation;
+- equal-tier merge;
+- unequal-drop snap-back and ghost cleanup;
+- injected Ogre pair completion;
+- Relic Blossom transfer;
+- Hoard relic artwork and count;
+- final reset.
+
+No browser console error or page error occurred.
+
+Measured layout:
+
+- desktop board width: `638 px`;
+- desktop minimum cell dimension: `121.1875 px`;
+- mobile board width: `398 px` inside a `430 px` viewport;
+- mobile minimum cell dimension: `76.390625 px`;
+- horizontal overflow: none in either browser.
+
+## Direct visual inspection completed
+
+Final screenshots were inspected after the automated gate.
+
+Mobile first screen:
+
+- dark violet-black nocturnal field with restrained star and firefly flecks;
+- centered cream title and amber eyebrow;
+- Sound and Codex controls at the upper corners;
+- separate illustrated Goblin Spawner and Hoard Chamber cards;
+- a large, contained five-by-five gray stone board;
+- eight warm green Imps distributed across the board;
+- large Undo and Reset controls below;
+- readable instruction copy with no horizontal clipping.
+
+Codex:
+
+- parchment field inside a dark purple framed dialog;
+- large close control;
+- discovered Imp shown with artwork and description;
+- undiscovered lineage entries shown consistently and scrollably.
+
+Hoard Chamber:
+
+- parchment dialog with clean isolated Relic Blossom shrine artwork;
+- correct `1 Relic Blossom` singular copy in both the background card and dialog;
+- no adjacent Ogre slice or other atlas contamination.
+
+The desktop composition remains centered, restrained, and proportionate rather than stretching to fill the entire monitor.
+
+## Defects found and repaired during the gate
+
+1. Corrupted single-line Base64 atlas transport.
+   Repaired with four bounded transport parts plus executable integrity and runtime verification.
+
+2. Spawner, Hoard Chamber, and Relic Blossom crops included neighboring atlas fragments.
+   Repaired by tightening `atlas-map.json` and inspecting replacement screenshots.
+
+3. Background Hoard card said `1 Relic Blossoms`.
+   Repaired with `src/relicSummary.js` and unit coverage.
+
+The exact mechanisms and prevention rules are recorded as HAH-004 through HAH-006 in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
+
+## Test workflow state
+
+`.github/workflows/bounded-browser-smoke.yml` is retained but frozen to `workflow_dispatch` only.
+
+It will not run on ordinary commits or pull-request synchronization. A future expensive browser run requires an explicit manual dispatch.
+
+The workflow uses:
+
+- public-repository GitHub-hosted runner;
+- read-only contents permission;
+- twenty-minute timeout;
+- transient Playwright installation;
+- one-day artifact retention.
+
+## Preview and deployment state
+
+A dedicated zero-cost Netlify project named `hollow-and-hoard-preview` was created to avoid contaminating another site.
+
+No game deploy was created.
+
+The tested runtime artifact was generated successfully from the passing workflow, but this execution environment could not obtain the official `@netlify/mcp` package:
+
+- the internal npm mirror returned 404;
+- a materially different public-registry request timed out.
+
+The deployment route is recorded as HAH-006 and must not be repeated in this environment without a new mechanism. The site name or undeployed URL must not be handed to Cynthia as though it were live.
+
+## Cost and external-state record
+
+- standard public-repository GitHub-hosted Actions used: yes, bounded and completed;
+- paid runner used: no;
+- paid infrastructure used: no;
+- paid API used: no;
+- production deployment created or changed: no;
+- game preview deployed: no;
+- pull request merged: no;
+- pull request marked ready: no;
+- third-party stock asset introduced: no;
+- possible cost introduced: no.
+
+## Remaining acceptance gates
+
+Automated browser readiness is complete. Remaining before handoff to Cynthia:
+
+1. deploy the exact tested runtime through a working binary-capable or official Netlify route;
+2. smoke-test the resulting hosted URL on an actual iPhone;
+3. have Cynthia judge drag feel, movement satisfaction, sound comfort, pacing, visual delight, and whether she wants to keep playing;
+4. repair only defects demonstrated by hosted or Cynthia testing;
+5. keep draft PR 1 unmerged until those gates are explicitly accepted.
 
 ## Prohibited assumptions
 
-Until explicitly decided, do not assume:
+Do not assume:
 
-- that the Claude prototype should become the application entry point;
-- that Moticos code or assets should be copied;
-- that a six-by-six board, timed spawning, or adjacency rule is accepted;
-- that React, Vite, TypeScript, or another framework is authorized merely because another prototype used it;
-- that repository setup authorizes Actions, deployment, publication, or release;
-- that free-tier availability authorizes creation of an external service;
-- that visual attractiveness establishes accessibility or Cynthia's acceptance.
+- automated mobile WebKit is equivalent to Cynthia's real-device judgment;
+- the blank Netlify project contains a live game;
+- the provisional assets are final production art;
+- a passing browser gate authorizes merge, production release, or handoff;
+- a free-tier service may be created or modified beyond the authorized isolated preview without explicit approval;
+- fresh generation is preferable to correcting the approved art.

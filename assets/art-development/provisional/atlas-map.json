@@ -1,0 +1,26 @@
+{
+  "atlas": "first-playable-atlas.webp",
+  "dimensions": [384, 256],
+  "source": "Composited and downsampled from the approved extracted Hollow & Hoard art; no creature or interface design was regenerated for this transport.",
+  "sprites": {
+    "goblin.imp": {"x": 22, "y": 52, "width": 43, "height": 48, "anchor": [0.5, 0.95]},
+    "goblin.goblin": {"x": 63, "y": 44, "width": 48, "height": 56, "anchor": [0.5, 0.95]},
+    "goblin.hobgoblin": {"x": 111, "y": 35, "width": 52, "height": 66, "anchor": [0.5, 0.95]},
+    "goblin.troll": {"x": 162, "y": 29, "width": 62, "height": 70, "anchor": [0.5, 0.95]},
+    "goblin.ogre": {"x": 223, "y": 5, "width": 74, "height": 96, "anchor": [0.5, 0.95]},
+    "goblin.relicBlossom": {"x": 299, "y": 27, "width": 76, "height": 75, "anchor": [0.5, 0.95]},
+    "board.stoneTile": {"x": 33, "y": 129, "width": 96, "height": 45, "anchor": [0.5, 0.5]},
+    "world.goblinSpawner": {"x": 128, "y": 103, "width": 94, "height": 72, "anchor": [0.5, 0.92]},
+    "world.hoardChamber": {"x": 222, "y": 103, "width": 108, "height": 72, "anchor": [0.5, 0.92]},
+    "ui.codex": {"x": 58, "y": 184, "width": 54, "height": 54, "anchor": [0.5, 0.5]},
+    "ui.playReference": {"x": 105, "y": 185, "width": 84, "height": 50, "anchor": [0.5, 0.5]},
+    "ui.returnReference": {"x": 184, "y": 185, "width": 94, "height": 50, "anchor": [0.5, 0.5]}
+  },
+  "notes": [
+    "Coordinates were tightened after Chromium and mobile WebKit screenshot inspection on 2026-07-31.",
+    "The refined rectangles remove neighboring atlas fragments while preserving complete silhouettes at board scale.",
+    "The atlas is transparent WebP transported as four bounded Base64 parts.",
+    "Generated words or labels inside UI reference regions are not authoritative copy and must not be shipped as text.",
+    "Do not regenerate these designs merely to obtain separate files; decode and crop the preserved atlas first."
+  ]
+}

@@ -1,6 +1,6 @@
 # Repository Preflight
 
-Use this checklist before every substantial implementation, repair, review, workflow, publication, or deployment assignment.
+Use this checklist before every substantial implementation, repair, art pass, review, workflow, publication, or deployment assignment.
 
 ## 1. Establish authority
 
@@ -11,21 +11,22 @@ Use this checklist before every substantial implementation, repair, review, work
 - Read `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`.
 - Read `docs/implementation-status.md`.
 - Read `docs/PROJECT_DEFINITION.md`.
+- Read `docs/VISUAL_DIRECTION.md`.
 - Read relevant entries in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
-- Read any phase, acceptance, repair, design, or testing record named by the assignment.
+- Read any phase, acceptance, repair, design, asset, or testing record named by the assignment.
 
 ## 2. Bound the assignment
 
 State before editing:
 
 - the requested outcome;
-- the files or behavior likely to change;
+- the files, assets, or behavior likely to change;
 - what is explicitly outside scope;
-- which accepted behavior must remain unchanged;
+- which accepted behavior and visual decisions must remain unchanged;
 - whether merge, publication, deployment, workflow dispatch, dependency addition, asset generation, or external-state changes are authorized;
 - the exact stop condition.
 
-Do not infer permission for a consequential action from permission to implement or test.
+Do not infer permission for a consequential action from permission to implement, generate, or test.
 
 ## 3. Preserve project separation
 
@@ -46,7 +47,26 @@ Do not copy code or assets merely because both projects are merge games.
 - Identify tests that already protect the behavior.
 - Verify whether the Claude prototype is being used only as concept evidence or has been explicitly accepted as implementation input.
 
-## 5. Protect the public boundary
+## 5. Preserve visual continuity
+
+Before any image generation or editing:
+
+- inspect the approved references in `docs/VISUAL_DIRECTION.md`;
+- inspect `assets/art-development/ASSET_MANIFEST.json` when present;
+- name the source image or asset being preserved;
+- state the specific correction, extraction, extension, or new requirement;
+- prefer an edit or extraction over a fresh generation;
+- avoid changing unrelated approved features;
+- verify that final game copy will not depend on text baked into generated imagery.
+
+After the pass:
+
+- inspect every result directly;
+- describe it concretely to the blind owner;
+- record what is approved, rejected, or still provisional;
+- preserve successful results for the next pass instead of regenerating them unnecessarily.
+
+## 6. Protect the public boundary
 
 Before adding any content, verify that it contains no:
 
@@ -59,7 +79,7 @@ Before adding any content, verify that it contains no:
 
 When uncertain, do not commit the material.
 
-## 6. Confirm zero-dollar status
+## 7. Confirm zero-dollar status
 
 Before adding automation, a dependency, an external service, an asset source, or hosting:
 
@@ -72,7 +92,7 @@ Before adding automation, a dependency, an external service, an asset source, or
 
 When cost status is uncertain, stop before activation.
 
-## 7. Choose the verification plan
+## 8. Choose the verification plan
 
 Record the minimum evidence required for completion, as applicable:
 
@@ -80,18 +100,18 @@ Record the minimum evidence required for completion, as applicable:
 - linting;
 - unit or integration tests;
 - production build;
-- automated accessibility checks;
 - interaction and state-machine tests;
+- touch and drag testing;
+- visual inspection at actual game-piece size;
+- silhouette and contrast review;
+- transparent-background and crop verification;
 - sound-level and sound-character review;
 - hosted preview verification;
-- real-device iPhone VoiceOver testing;
 - Cynthia's play testing and subjective acceptance.
 
-Automated checks do not substitute for VoiceOver acceptance when behavior depends on spoken output, swipe order, focus placement, timing, touch interaction, drag alternatives, or nonvisual game-state comprehension.
+Automated checks do not substitute for Cynthia's judgment about beauty, movement, sound comfort, delight, or pacing.
 
-Automated checks also do not substitute for Cynthia's judgment about beauty, movement, sound comfort, delight, or pacing.
-
-## 8. Use automation deliberately
+## 9. Use automation deliberately
 
 When a zero-dollar GitHub Actions workflow is useful:
 
@@ -104,7 +124,7 @@ When a zero-dollar GitHub Actions workflow is useful:
 
 No workflow should be created before the stack and exact check commands are established.
 
-## 9. Change methods when the method is the failure
+## 10. Change methods when the method is the failure
 
 After two failures with the same mechanism for the same confirmed reason:
 
@@ -117,7 +137,7 @@ After two failures with the same mechanism for the same confirmed reason:
 
 Do not reconstruct large files manually from overlapping fragments when a safer exact route exists.
 
-## 10. Maintain owner visibility
+## 11. Maintain owner visibility
 
 During multi-step work, report:
 
@@ -127,14 +147,14 @@ During multi-step work, report:
 - whether the present method remains viable;
 - the next consequential action before taking it.
 
-Silence must not conceal repetition, uncertainty, or a stalled method.
+For visual work, silence after generation is not acceptable. The owner must receive an inspected verbal account of the result.
 
-## 11. Close with evidence
+## 12. Close with evidence
 
 Before declaring completion:
 
 - confirm the final branch and commit;
-- inspect the final changed files;
+- inspect the final changed files and assets;
 - record every verification result;
 - identify any Actions run or deployment performed;
 - identify dependencies, services, or assets added;
