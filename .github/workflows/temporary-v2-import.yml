@@ -29,6 +29,7 @@ jobs:
       EXPECTED_BASE64_CHARS: "120820"
       EXPECTED_ZIP_BYTES: "90615"
       EXPECTED_ZIP_SHA256: ddeda96af4522078147bd84bff373fd96fa232885ecfcf099323dd2167e6e4da
+      EXPECTED_CHUNK_09_SHA256: c648e4cec2d8ef2b11bf068ea0548bc8fd4b6b69bf774226fe9b3d947d482852
 
     steps:
       - name: Check out repository history
@@ -39,7 +40,7 @@ jobs:
       - name: Reset worktree to clean Version 2 plan
         run: git reset --hard "${CLEAN_PARENT}"
 
-      - name: Receive and diagnose bounded import chunks
+      - name: Receive and verify bounded import chunks
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -54,18 +55,41 @@ jobs:
               exit 1
             fi
 
-            payload=$(printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n')
-            actual_length=$(printf '%s' "${payload}" | wc -c)
+            payload_path="/tmp/chunk-${number}.txt"
+            printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n' > "${payload_path}"
+            actual_length=$(wc -c < "${payload_path}")
             expected_length=12000
             if [[ "${number}" == "11" ]]; then
               expected_length=820
             fi
-            echo "Chunk ${number}: ${actual_length} characters; expected ${expected_length}."
-            if [[ "${actual_length}" -ne "${expected_length}" ]]; then
-              echo "Length mismatch in ${prefix}." >&2
-              exit 1
+
+            if [[ "${number}" == "09" && "${actual_length}" -eq 11999 ]]; then
+              python3 - "${payload_path}" "${EXPECTED_CHUNK_09_SHA256}" <<'PY'
+import hashlib
+import pathlib
+import sys
+
+path = pathlib.Path(sys.argv[1])
+expected = sys.argv[2]
+data = path.read_bytes()
+alphabet = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+for position in range(len(data) + 1):
+    prefix = data[:position]
+    suffix = data[position:]
+    for character in alphabet:
+        candidate = prefix + bytes([character]) + suffix
+        if hashlib.sha256(candidate).hexdigest() == expected:
+            path.write_bytes(candidate)
+            print(f"Repaired chunk 09 at character position {position} with a hash-verified Base64 character.")
+            raise SystemExit(0)
+raise SystemExit("No single-character repair matched the authoritative chunk SHA-256.")
+PY
+              actual_length=$(wc -c < "${payload_path}")
             fi
-            printf '%s' "${payload}" >> /tmp/hollow-v2.b64
+
+            echo "Chunk ${number}: ${actual_length} characters; expected ${expected_length}."
+            test "${actual_length}" -eq "${expected_length}"
+            cat "${payload_path}" >> /tmp/hollow-v2.b64
           done
 
           total_length=$(wc -c < /tmp/hollow-v2.b64)
