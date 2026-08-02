@@ -1,4 +1,4 @@
-name: Temporary verified Version 2 import
+name: Temporary verified Version 2 clean import
 
 on:
   pull_request:
