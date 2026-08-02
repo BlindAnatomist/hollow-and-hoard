@@ -1,9 +1,9 @@
 name: Temporary verified Version 2 clean import
 
 on:
-  pull_request:
+  push:
     branches:
-      - art-direction-and-first-assets
+      - version-2-cynthia-feedback
     paths:
       - ".github/workflows/temporary-v2-import.yml"
 
