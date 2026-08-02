@@ -1,0 +1,95 @@
+name: Temporary Version 2 clean import
+
+on:
+  pull_request:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - "transport/v2/READY"
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: hollow-and-hoard-v2-clean-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    name: Reconstruct, verify, test, and commit Version 2
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLEAN_PARENT: cfc29a2363662969f82f831d0695aa8457a9a98d
+      TARGET_BRANCH: version-2-cynthia-feedback
+      PR_NUMBER: "2"
+      CHUNK_COUNT: "11"
+      EXPECTED_BASE64_CHARS: "120820"
+      EXPECTED_ZIP_BYTES: "90615"
+      EXPECTED_ZIP_SHA256: ddeda96af4522078147bd84bff373fd96fa232885ecfcf099323dd2167e6e4da
+
+    steps:
+      - name: Check out Version 2 branch with full history
+        uses: actions/checkout@v4
+        with:
+          ref: version-2-cynthia-feedback
+          fetch-depth: 0
+
+      - name: Reset worktree to accepted Version 1 parent
+        run: git reset --hard "${CLEAN_PARENT}"
+
+      - name: Receive all eleven bounded package chunks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          : > /tmp/hollow-v2.b64
+          for number in $(seq -w 1 "${CHUNK_COUNT}"); do
+            prefix="V2_CLEAN_IMPORT_CHUNK_${number}_OF_${CHUNK_COUNT}"
+            body=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate \
+              --jq "[.[] | select(.body | startswith(\"${prefix}\\n\"))] | last | .body // \"\"")
+            if [[ -z "${body}" ]]; then
+              echo "Missing ${prefix}." >&2
+              exit 1
+            fi
+            payload="/tmp/chunk-${number}.txt"
+            printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n' > "${payload}"
+            expected=12000
+            if [[ "${number}" == "11" ]]; then expected=820; fi
+            actual=$(wc -c < "${payload}")
+            echo "Chunk ${number}: ${actual}/${expected} characters"
+            test "${actual}" -eq "${expected}"
+            cat "${payload}" >> /tmp/hollow-v2.b64
+          done
+          test "$(wc -c < /tmp/hollow-v2.b64)" -eq "${EXPECTED_BASE64_CHARS}"
+
+      - name: Verify and extract exact Version 2 package
+        run: |
+          set -euo pipefail
+          base64 --decode /tmp/hollow-v2.b64 > /tmp/hollow-v2.zip
+          test "$(wc -c < /tmp/hollow-v2.zip)" -eq "${EXPECTED_ZIP_BYTES}"
+          echo "${EXPECTED_ZIP_SHA256}  /tmp/hollow-v2.zip" | sha256sum --check --strict
+          unzip -q -o /tmp/hollow-v2.zip -d /tmp/hollow-v2-package
+          cp -R /tmp/hollow-v2-package/. .
+          rm -f package-lock.json src/atlas.js src/relicSummary.js tests/assetIntegrity.test.js tests/relicSummary.test.js
+          rm -rf transport
+
+      - name: Validate JavaScript and run Version 2 tests
+        run: |
+          node --check src/app.js
+          node --check src/audio.js
+          node --check src/gameLogic.js
+          node --check src/productionAssets.js
+          node --check src/storage.js
+          npm test
+
+      - name: Commit one clean Version 2 implementation
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Build Version 2 from Cynthia feedback"
+          git push --force origin "HEAD:${TARGET_BRANCH}"
