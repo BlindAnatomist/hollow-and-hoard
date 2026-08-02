@@ -6,6 +6,11 @@ on:
       - version-2-cynthia-feedback
     paths:
       - ".github/workflows/temporary-v2-import.yml"
+  pull_request:
+    branches:
+      - art-direction-and-first-assets
+    paths:
+      - ".github/workflows/temporary-v2-import.yml"
 
 permissions:
   contents: write
@@ -54,47 +59,34 @@ jobs:
               echo "Missing ${prefix}." >&2
               exit 1
             fi
-
             payload_path="/tmp/chunk-${number}.txt"
             printf '%s\n' "${body}" | tail -n +2 | tr -d '\r\n' > "${payload_path}"
             actual_length=$(wc -c < "${payload_path}")
             expected_length=12000
-            if [[ "${number}" == "11" ]]; then
-              expected_length=820
-            fi
-
+            if [[ "${number}" == "11" ]]; then expected_length=820; fi
             if [[ "${number}" == "09" && "${actual_length}" -eq 11999 ]]; then
               python3 - "${payload_path}" "${EXPECTED_CHUNK_09_SHA256}" <<'PY'
-import hashlib
-import pathlib
-import sys
-
+import hashlib, pathlib, sys
 path = pathlib.Path(sys.argv[1])
 expected = sys.argv[2]
 data = path.read_bytes()
 alphabet = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 for position in range(len(data) + 1):
-    prefix = data[:position]
-    suffix = data[position:]
     for character in alphabet:
-        candidate = prefix + bytes([character]) + suffix
+        candidate = data[:position] + bytes([character]) + data[position:]
         if hashlib.sha256(candidate).hexdigest() == expected:
             path.write_bytes(candidate)
-            print(f"Repaired chunk 09 at character position {position} with a hash-verified Base64 character.")
+            print(f"Repaired chunk 09 at position {position}.")
             raise SystemExit(0)
-raise SystemExit("No single-character repair matched the authoritative chunk SHA-256.")
+raise SystemExit("No hash-verified single-character repair matched chunk 09.")
 PY
               actual_length=$(wc -c < "${payload_path}")
             fi
-
-            echo "Chunk ${number}: ${actual_length} characters; expected ${expected_length}."
+            echo "Chunk ${number}: ${actual_length}; expected ${expected_length}."
             test "${actual_length}" -eq "${expected_length}"
             cat "${payload_path}" >> /tmp/hollow-v2.b64
           done
-
-          total_length=$(wc -c < /tmp/hollow-v2.b64)
-          echo "Combined Base64: ${total_length} characters; expected ${EXPECTED_BASE64_CHARS}."
-          test "${total_length}" -eq "${EXPECTED_BASE64_CHARS}"
+          test "$(wc -c < /tmp/hollow-v2.b64)" -eq "${EXPECTED_BASE64_CHARS}"
 
       - name: Verify and extract exact package
         run: |
@@ -118,5 +110,3 @@ PY
           git add -A
           git commit -m "Build Version 2 from Cynthia feedback"
           git push --force origin "HEAD:${TARGET_BRANCH}"
-
-# relay-ready-2026-08-02
