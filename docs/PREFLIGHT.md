@@ -1,164 +1,233 @@
 # Repository Preflight
 
-Use this checklist before every substantial implementation, repair, art pass, review, workflow, publication, or deployment assignment.
+Use this checklist before every substantial implementation, repair, asset transfer, workflow, review, publication, deployment, or owner handoff.
 
-## 1. Establish authority
+## 1. Establish source authority
 
-- Confirm the repository is `BlindAnatomist/hollow-and-hoard`.
-- Record the active branch and exact starting commit.
-- Identify any open pull request governing the work.
-- Read `AGENTS.md`.
-- Read `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`.
-- Read `docs/implementation-status.md`.
-- Read `docs/PROJECT_DEFINITION.md`.
-- Read `docs/VISUAL_DIRECTION.md`.
-- Read relevant entries in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
-- Read any phase, acceptance, repair, design, asset, or testing record named by the assignment.
+Record before editing:
 
-## 2. Bound the assignment
+- repository: `BlindAnatomist/hollow-and-hoard`;
+- active branch;
+- immutable starting commit;
+- open pull request and its actual base and head;
+- requested outcome;
+- exact files or behavior in scope;
+- accepted behavior that must remain unchanged;
+- actions explicitly outside scope;
+- exact stop condition.
 
-State before editing:
+Read:
 
-- the requested outcome;
-- the files, assets, or behavior likely to change;
-- what is explicitly outside scope;
-- which accepted behavior and visual decisions must remain unchanged;
-- whether merge, publication, deployment, workflow dispatch, dependency addition, asset generation, or external-state changes are authorized;
-- the exact stop condition.
+1. `AGENTS.md`;
+2. `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`;
+3. `docs/implementation-status.md`;
+4. `docs/PROJECT_DEFINITION.md`;
+5. all relevant entries in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`;
+6. every phase, acceptance, art, test, or repair record named by the assignment.
 
-Do not infer permission for a consequential action from permission to implement, generate, or test.
+Do not treat a PR description, previous conversation, generated package, local screenshot, or remembered branch state as repository authority.
 
-## 3. Preserve project separation
+## 2. Search for the solved mechanism first
 
-Before transferring anything from Moticos for Cynthia or another repository, identify whether it is:
+Before diagnosing or designing a method:
 
-- a general lesson or standard that may be restated;
-- a reusable technical mechanism that requires explicit review;
-- project-specific code, artwork, audio, naming, content, or history that must remain separate.
+- search the local register by symptom, mechanism, failed approach, and external service;
+- identify whether Val Music Vault or another owner repository already proved the same mechanism;
+- begin with the proven route when it applies;
+- state why a new route is necessary when departing from it.
 
-Do not copy code or assets merely because both projects are merge games.
+A familiar problem must not become a new research project merely because it appears in a different repository.
 
-## 4. Inspect before changing
+## 3. Bound the execution envelope
 
-- Examine the current implementation rather than assuming its structure.
-- Check recent commits and pull-request changes relevant to the assignment.
-- Reproduce or verify the reported problem when practical.
-- Search the proven-solutions register for the same mechanism, not merely the same visible symptom.
-- Identify tests that already protect the behavior.
-- Verify whether the Claude prototype is being used only as concept evidence or has been explicitly accepted as implementation input.
+Distinguish:
 
-## 5. Preserve visual continuity
+- source creation or repair;
+- asset preparation;
+- formatting;
+- tests and browser verification;
+- transport;
+- deployment or publication;
+- owner or Cynthia acceptance.
 
-Before any image generation or editing:
+State which environment is required for each part. The size of the source diff does not determine the size of the execution assignment.
 
-- inspect the approved references in `docs/VISUAL_DIRECTION.md`;
-- inspect `assets/art-development/ASSET_MANIFEST.json` when present;
-- name the source image or asset being preserved;
-- state the specific correction, extraction, extension, or new requirement;
-- prefer an edit or extraction over a fresh generation;
-- avoid changing unrelated approved features;
-- verify that final game copy will not depend on text baked into generated imagery.
+Do not assign GitHub Actions, Work, connectors, or the owner tasks that a cheaper capable route can complete reliably.
 
-After the pass:
+## 4. Classify transport before moving bytes
 
-- inspect every result directly;
-- describe it concretely to the blind owner;
-- record what is approved, rejected, or still provisional;
-- preserve successful results for the next pass instead of regenerating them unnecessarily.
+Ask:
 
-## 6. Protect the public boundary
+1. Does the complete trustworthy file already exist?
+2. Is the remaining task only to move intact bytes?
+3. Or does the file still require transformation, formatting, testing, conflict resolution, or a multi-file atomic commit?
 
-Before adding any content, verify that it contains no:
+If only transport remains:
 
-- secret, password, token, private key, or credential;
-- private email, address, telephone number, account information, or personal record;
-- copyrighted or private asset lacking authorization for public release;
-- development fixture derived from private source material;
-- configuration that exposes a protected service;
-- material whose license or redistribution status is uncertain.
+- prefer an intact artifact, direct complete-file route, authenticated checkout, or bounded owner-operated file handoff;
+- allow no more than two attempts with a connector that truncates, clips, or rejects the file;
+- do not reconstruct large files from overlapping fragments;
+- do not use PR comments, trigger commits, scheduled workflows, or Actions merely to carry the bytes;
+- verify file identity and resulting repository state independently.
 
-When uncertain, do not commit the material.
+If development remains, use a capable environment. Do not disguise development as transport.
 
-## 7. Confirm zero-dollar status
+## 5. Evaluate a bounded owner handoff
 
-Before adding automation, a dependency, an external service, an asset source, or hosting:
+Before spending extended time around a missing connector action, ask whether one exact owner-operated action can close the gate.
 
-- confirm that the mechanism is zero-dollar for the intended use;
-- confirm that it will not convert into a paid plan or consume a paid allowance;
-- confirm that no billing information or paid account is required;
-- verify licensing and redistribution terms;
-- verify that publication or deployment is separately authorized;
-- record the result in the completion report.
+A handoff is allowed only when:
 
-When cost status is uncertain, stop before activation.
+- the exact target and action are known;
+- safety and acceptance evidence are already established;
+- the owner need not search, compare, diagnose, edit, choose a branch, or interpret unfamiliar options;
+- the action is VoiceOver-manageable and already authorized;
+- no cost, secret, private media, merge, publication, or broader mutation is involved.
 
-## 8. Choose the verification plan
+Prepare:
 
-Record the minimum evidence required for completion, as applicable:
+- exact address;
+- exact control;
+- expected confirmation;
+- nearby controls not to activate;
+- stop condition;
+- independent post-action verification.
 
-- type checking;
-- linting;
-- unit or integration tests;
-- production build;
-- interaction and state-machine tests;
-- touch and drag testing;
-- visual inspection at actual game-piece size;
-- silhouette and contrast review;
-- transparent-background and crop verification;
-- sound-level and sound-character review;
-- hosted preview verification;
-- Cynthia's play testing and subjective acceptance.
+## 6. Protect the public and zero-dollar boundaries
 
-Automated checks do not substitute for Cynthia's judgment about beauty, movement, sound comfort, delight, or pacing.
+Before adding a file, service, asset, workflow, or deployment, verify:
 
-## 9. Use automation deliberately
+- no secret, credential, personal record, private correspondence, or unauthorized media is exposed;
+- licensing permits public repository use;
+- no paid runner, API, storage, subscription, trial conversion, or service is introduced;
+- publication or deployment has separate explicit authorization;
+- the operation cannot retrigger itself or alter unrelated external state.
 
-When a zero-dollar GitHub Actions workflow is useful:
+When cost or licensing status is uncertain, stop.
 
-- inspect and verify locally or through the active environment first when practical;
-- avoid duplicate workflows and unnecessary reruns;
-- inspect failed logs before rerunning;
-- use least-privilege permissions, realistic timeouts, and concurrency cancellation;
-- do not select paid runners or paid services;
-- do not let a workflow merge, publish, deploy, release, or alter external state unless that behavior is separately authorized and documented.
+## 7. Preserve Cynthia-first product authority
 
-No workflow should be created before the stack and exact check commands are established.
+For game changes, define how the checkpoint will evaluate:
 
-## 10. Change methods when the method is the failure
+- professional visual sharpness;
+- movement and drag satisfaction;
+- sound comfort and audibility;
+- story comprehension;
+- board calmness and environmental life;
+- pacing, delight, and desire to continue.
 
-After two failures with the same mechanism for the same confirmed reason:
+Keep story and how-to-play content separate from the active board when that preserves visual space. Use clean controls, but do not impose a VoiceOver-first interaction model on a game built for Cynthia.
 
-1. stop that mechanism;
-2. state what is already complete;
-3. identify the remaining gate;
-4. explain why the method failed;
-5. choose a materially different route;
-6. define the new stop condition.
+## 8. Format to a fixed point when a formatter exists
 
-Do not reconstruct large files manually from overlapping fragments when a safer exact route exists.
+When the repository has a pinned formatter:
 
-## 11. Maintain owner visibility
+1. install from the exact lockfile when needed;
+2. run the formatter;
+3. inspect or hash the diff;
+4. repeat until two successive diff hashes match, with a maximum of four passes;
+5. stop and isolate the file if convergence does not occur;
+6. run the formatter check;
+7. inspect for semantic changes;
+8. run the complete check suite;
+9. commit canonical formatting with the source.
+
+Required sequence:
+
+`format to a fixed point, inspect, then check`
+
+Do not use an acceptance run to discover unformatted files. Do not add a formatter when none is pinned merely to satisfy this checklist.
+
+## 9. Define the verification plan before Actions
+
+Record the minimum evidence required, such as:
+
+- syntax or type checks;
+- unit and state-machine tests;
+- asset dimension, byte, and hash integrity;
+- browser interaction smoke tests;
+- desktop and mobile layout screenshots;
+- console and page-error checks;
+- hosted exact-file verification;
+- Cynthia device testing.
+
+Automated checks prove contracts. Cynthia establishes the intended player experience.
+
+## 10. Apply the Actions circuit breaker
+
+Before a workflow run:
+
+- run every available check outside Actions;
+- batch all known repairs;
+- record exact source commit, commands, expected evidence, and stop condition;
+- confirm least-privilege permissions, timeout, concurrency, and no unauthorized external mutation.
+
+After the first failed run:
+
+1. stop workflow activity;
+2. inspect the complete failed job and logs;
+3. preserve successful evidence;
+4. search the HAH register;
+5. repair and batch outside Actions;
+6. record the diagnosis and replacement method;
+7. allow at most one corrective acceptance run.
+
+If the corrective run finds another defect, the circuit is open. Do not create, edit, trigger, schedule, replace, or rerun another workflow on that branch without telling the owner the circuit is open and receiving explicit authorization for one identified additional run.
+
+Rerun only the failed job when possible. Do not repeat successful setup or browser installation.
+
+## 11. Preserve trigger and state distinctions
+
+Do not confuse:
+
+- commit creation;
+- branch-ref movement;
+- PR metadata refresh;
+- workflow eligibility;
+- queue entry;
+- job start;
+- artifact creation;
+- deploy ingestion;
+- build completion;
+- publication.
+
+Require positive failure evidence or an exceeded bounded wait before issuing another trigger. Do not toggle PR state, retarget PR bases, create marker commits, install workflows on unrelated branches, schedule recurring jobs, or force-push branches as exploratory trigger probes.
+
+## 12. Change methods decisively
+
+After two failures with the same mechanism:
+
+1. stop it;
+2. preserve completed state;
+3. identify the single remaining gate;
+4. state why the method is invalid;
+5. select a materially different proven route;
+6. define its stop condition;
+7. tell the owner before the next consequential action.
+
+Changing names, branches, event types, or wrappers around the same failed mechanism is not a materially different route.
+
+## 13. Maintain owner visibility
 
 During multi-step work, report:
 
-- the current completed state;
+- what is complete;
 - the active gate;
-- any blocker;
-- whether the present method remains viable;
-- the next consequential action before taking it.
+- the blocker;
+- whether the method remains viable;
+- the next consequential action.
 
-For visual work, silence after generation is not acceptable. The owner must receive an inspected verbal account of the result.
+After two or three tool calls without forward progress, report the lack of progress. A stream interruption does not mean work continued invisibly.
 
-## 12. Close with evidence
+## 14. Close with evidence
 
 Before declaring completion:
 
-- confirm the final branch and commit;
-- inspect the final changed files and assets;
-- record every verification result;
-- identify any Actions run or deployment performed;
-- identify dependencies, services, or assets added;
-- state whether any cost was introduced;
+- confirm exact final branch and commit;
+- inspect every changed file;
+- record checks and results;
+- identify Actions runs and deployments;
+- identify dependencies, services, assets, or costs introduced;
+- verify no unrelated branch, PR, workflow, merge, publication, or external state changed;
 - state what remains unverified;
-- identify the next bounded step;
-- state whether the owner or Cynthia is needed for testing or authorization.
+- identify the next bounded step and whether owner or Cynthia action is required.
