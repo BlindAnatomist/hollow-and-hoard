@@ -1,21 +1,27 @@
 # Repository Instructions
 
-This file governs all agent work in `BlindAnatomist/hollow-and-hoard`.
+This file governs all human and agent work in `BlindAnatomist/hollow-and-hoard`.
 
-## 1. Authoritative reconstruction is mandatory
+Last reconciled: August 5, 2026.
 
-Before changing this repository:
+## 1. Mandatory continuity reconstruction
 
-1. Confirm the exact repository, active branch, immutable starting commit, open pull request, and assignment boundary.
-2. Read `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`.
-3. Read `docs/PREFLIGHT.md`.
-4. Read `docs/implementation-status.md`.
-5. Read `docs/PROJECT_DEFINITION.md`.
-6. Read every relevant entry in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
-7. Inspect the current files and recent repository evidence instead of relying on conversation history, an earlier screenshot, a PR description, or remembered branch state.
-8. Preserve behavior and assets already recorded as accepted unless the assignment explicitly changes them.
+Before changing implementation, assets, documentation, workflows, branches, pull requests, deployment, publication, or external state, read and reconcile:
 
-A problem that has already been solved in Val Music Vault or another owner repository must not be treated as novel merely because it appears in Hollow & Hoard. Search the local register first; when the local register identifies a cross-repository source, inspect that source before choosing a method.
+1. this file;
+2. `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`;
+3. `docs/PREFLIGHT.md`;
+4. `docs/implementation-status.md`;
+5. `docs/PROJECT_DEFINITION.md`;
+6. `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`;
+7. `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS_HAH-009.md`;
+8. every governing phase, acceptance, art, test, or repair record named by the assignment.
+
+Do not rely on chat memory, a prior thread, a PR description, a status document, recent modification time, a branch name, or an earlier screenshot when repository evidence is available.
+
+A problem already solved in Val Music Vault, Guitar Eyes, or another owner repository must not be treated as novel. Search the local register first, then inspect the exact current cross-repository source when the same mechanism applies.
+
+Recorded failures are not passive history. They restrict what the next worker is allowed to do.
 
 ## 2. Product authority is Cynthia-first
 
@@ -29,210 +35,260 @@ Primary acceptance authority belongs to:
 - understandable story and progression;
 - pacing, delight, and desire to continue playing.
 
-VoiceOver-specific operation is not a first-playable design authority for this project. Preserve ordinary semantic HTML, accurate control names, keyboard operability where practical, reduced-motion support, and basic accessibility hygiene, but do not redesign the game around the owner's nonvisual use unless a later assignment explicitly changes the audience.
+Preserve semantic HTML, accurate control names, keyboard operation where practical, reduced-motion support, and basic accessibility hygiene. Do not redesign the game around the owner's nonvisual use unless a later assignment explicitly changes the audience.
 
-Do not claim Cynthia-facing qualities are accepted until Cynthia has tested the exact build.
+Do not claim Cynthia-facing qualities are accepted until Cynthia tests the exact build.
 
 ## 3. Public-repository and project-separation boundary
 
-This is a public repository. Never commit secrets, credentials, tokens, private correspondence, personal identifying information, private media, or assets lacking authorization for public redistribution.
+This is a public repository. Never commit secrets, credentials, tokens, private correspondence, identifying personal information, private media, or assets lacking public-use authorization.
 
-Hollow & Hoard is independent from Moticos for Cynthia, Val Music Vault, and every other repository. Transfer proven mechanisms and operating standards deliberately; do not copy project-specific code, artwork, audio, terminology, data, or history merely because another project is similar.
+Transfer proven mechanisms and operating standards from other repositories deliberately. Do not copy their project-specific code, artwork, audio, terminology, data, or history merely because a mechanism is similar.
 
 ## 4. Zero-dollar authority
 
-The zero-dollar policy is binding.
+No paid GitHub usage, runner, API, storage, subscription, trial conversion, or external service is authorized.
 
-- Do not create or activate paid runners, services, APIs, storage, assets, subscriptions, trials that convert to payment, or infrastructure capable of incurring cost.
-- Standard GitHub-hosted runners may be used only when confirmed zero-dollar for this public repository and materially necessary for a bounded checkpoint.
-- Do not dispatch Actions merely to discover the implementation, move bytes, test trigger theories, or expose one failure at a time.
-- Do not deploy or publish through any external service without explicit authorization, even when a free tier exists.
-- When cost status is uncertain, stop before activation.
+GitHub-hosted workflows may be used only when confirmed zero-dollar and materially necessary for one bounded acceptance checkpoint. Free runner minutes do not erase the costs of owner time, repository noise, repeated diagnosis, or lost momentum.
 
-Free runner minutes do not make repeated runs free in the operational sense. Owner time, repository noise, repeated diagnosis, and lost project momentum are costs.
+Do not deploy or publish through any external service without separate explicit authorization. When cost status is uncertain, stop before activation.
 
-## 5. Bound the assignment before editing
+## 5. Establish source authority before writing
 
-State before consequential work:
+Before any repository write, record:
 
-- the requested outcome;
-- the exact source and file boundary;
-- the accepted state that must remain unchanged;
-- what is outside scope;
-- the minimum proof required;
-- whether workflow dispatch, deployment, publication, merge, dependency changes, asset generation, or external-state mutation is authorized;
-- the exact stop condition.
+- exact repository;
+- active branch;
+- immutable starting commit;
+- open PR and its actual base and head;
+- requested outcome;
+- exact source and behavior boundary;
+- accepted state that must remain unchanged;
+- actions outside scope;
+- minimum proof;
+- exact stop condition.
 
-Do not broaden a repair into redesign, cleanup, a new phase, or infrastructure work. Authorization to finish a feature is not blanket authorization for unlimited Actions runs, branch rewrites, deployments, merges, or owner dashboard work.
+Application authority must be established from the objects that carry the claim:
 
-## 6. Development and transport are different problems
+1. exact runtime entry points and current source;
+2. ancestry from the accepted base;
+3. inherited tests and behavior contracts;
+4. built or hosted artifact identity when relevant;
+5. acceptance evidence.
 
-Before moving a large file or artifact, classify the remaining work:
+Documentation describes authority. It does not create it.
 
-1. Is the file still being created, repaired, formatted, tested, or built?
-2. Or is a complete trustworthy file already available and only the intact bytes must be transported?
+Branch names, recent activity, PR prose, status prose, workflow summaries, and a thinner green replacement suite are not source-lineage evidence.
 
-Use a capable development environment for transformation and proof. Use the simplest safe intact route for transport.
+Do not move a branch while its actual application source remains uncertain.
+
+## 6. Authority-collapse and recovery circuit breaker
+
+Every recovery attempt must define in advance:
+
+- the exact authoritative object;
+- expected path, size, hash, and structure;
+- the maximum number of attempts;
+- the materially different fallback route;
+- the condition that selects reconstruction instead.
+
+The first integrity failure stops transfer and triggers diagnosis. One materially different intact-source route may be attempted when positive evidence supports it.
+
+A second independent contradiction, another identity failure, or proof that the remaining sources are known-corrupt closes the recovery circuit.
+
+Once closed:
+
+- stop fragment extraction, comment archaeology, workflow archaeology, byte splicing, trigger experiments, and force-push speculation;
+- preserve the damaged evidence without resuming product work from it;
+- compare recovery cost with clean reconstruction;
+- choose reconstruction immediately when it is cheaper, safer, or more verifiable;
+- stop recovery immediately when the owner directs reconstruction.
+
+Do not continue merely because the material may be theoretically recoverable.
+
+## 7. Bound the assignment before editing
+
+State whether the assignment includes or excludes:
+
+- application source;
+- assets;
+- formatting;
+- dependencies;
+- automated tests;
+- browser or hosted proof;
+- Actions;
+- deployment or publication;
+- merge or PR-state changes;
+- external-state mutation;
+- owner or Cynthia action.
+
+Do not broaden a repair into redesign, cleanup, infrastructure work, or a new phase. Authorization to finish a feature is not blanket authorization for unlimited runs, branch rewrites, deployments, merges, or dashboard work.
+
+## 8. Development and transport are different problems
+
+Classify the remaining work before moving bytes:
+
+1. development: creation, repair, formatting, testing, conflict resolution, build, or multi-file atomic work;
+2. transport: a complete trustworthy object already exists and only intact bytes must move.
+
+Use the simplest safe route for transport and a capable environment for transformation and proof.
 
 When a connector truncates, clips, rejects, or cannot carry a complete artifact:
 
 - permit no more than two attempts with that exact mechanism;
 - stop fragment reconstruction after the second confirmed failure;
-- do not create overlapping comment chunks, text relays, trigger commits, scheduled workflows, or Git trees merely to keep the same failed transport alive;
-- prefer an existing verified artifact, direct complete-file download or upload, an authenticated checkout, or one explicitly bounded capable environment;
-- do not use GitHub Actions merely to move an intact file;
-- never manually reconstruct a large file from overlapping fragments when an intact route exists.
+- do not use PR comments, overlapping ranges, text relays, trigger commits, scheduled workflows, Git trees, or Actions merely to keep the failed transport alive;
+- prefer an existing verified artifact, direct modular source, an authenticated checkout, or one bounded intact-file handoff;
+- verify filename, byte count, hash or blob identity, source commit, destination branch and path, complete contents or exact diff, and absence of unrelated changes.
 
-The governing rule is:
+Successful transport is not formatting, test, build, packaging, accessibility, or runtime proof.
 
-`Use the simplest safe route for transport; use a capable environment for transformation and proof.`
+## 9. Bounded owner-operated action
 
-## 7. Intact owner-operated file handoff
+The assistant remains responsible whenever a connector, API, CLI, or authenticated environment can perform the exact action reliably.
 
-A bounded owner-operated file handoff may be used when all of the following are true:
+A bounded owner action is permitted only when:
 
-- the exact complete file already exists;
-- the source repository, branch or immutable commit, path, file name, expected identity, and destination are known;
-- assistant connectors cannot transport the intact bytes reliably;
-- the operation is one deterministic download, attachment, upload, or replacement;
-- the owner is not asked to edit, compare, diagnose, choose a branch, resolve conflicts, inspect hashes, or explore GitHub;
-- no secret, private media, paid action, merge, deployment, publication, or production mutation is involved.
+- authorization already exists;
+- the exact target object, branch, path, file, deploy, or setting is known;
+- identity, state, acceptance evidence, and safety boundaries are verified first;
+- assistant tools cannot perform the same exact operation or would create a materially different result;
+- the action is narrow, deterministic, and VoiceOver-manageable;
+- the owner need not search, compare, diagnose, edit, choose a branch, resolve conflicts, inspect hashes, or make an architectural judgment;
+- no cost, secret, private media, merge, deployment, publication, or destructive ambiguity is hidden inside it.
 
-The assistant must provide the exact address, exact control, expected file name, expected identity when available, prohibited alternatives, commit message when applicable, and stop condition. Afterward, independently verify the resulting commit, branch, path, blob or hash, full contents or exact diff, and absence of unrelated changes.
+Provide the exact address, exact accessible control, expected confirmation, prohibited alternatives, filename or commit message when applicable, and precise stop condition. Independently verify the result afterward.
 
-A successful file handoff is transport evidence only. It does not prove formatting, lint, tests, accessibility, build, packaging, or runtime behavior.
+Do not replace one exact safe owner action with prolonged autonomy theater.
 
-## 8. Bounded owner-operated dashboard action
+## 10. GitHub Actions circuit breaker
 
-The assistant remains responsible for dashboard work whenever a connector, API, CLI, or authenticated environment can perform the exact action reliably.
-
-Do not transfer a limitation to the owner before checking those routes. Conversely, do not spend extended time performing autonomy theater when one exact, already-authorized, VoiceOver-manageable control can close the remaining gate safely.
-
-A bounded handoff is allowed only when:
-
-- the exact target object and action are known;
-- identity, source, state, acceptance evidence, and safety boundaries have already been verified;
-- assistant tools cannot perform the same operation or would create a materially different result;
-- the owner need not search, compare, diagnose, or interpret unfamiliar choices.
-
-Provide the exact page address, exact control name, expected confirmation, controls not to activate, and precise stop condition. Immediately verify the result independently afterward.
-
-## 9. GitHub Actions circuit breaker
-
-GitHub Actions is an acceptance checkpoint, not a development environment, byte-transfer service, branch-control mechanism, or trigger laboratory.
-
-Before creating, editing, triggering, rerunning, or relying on any workflow, re-read:
-
-- this file;
-- `.github/ZERO_DOLLAR_AUTOMATION_POLICY.md`;
-- `docs/PREFLIGHT.md`;
-- the relevant HAH incident records;
-- the governing phase or repair record.
+GitHub Actions is an acceptance checkpoint, not a development environment, byte-transfer service, branch-control mechanism, trigger laboratory, or serial environment-discovery service.
 
 Before the first run:
 
-1. Run every available check in the active working environment.
-2. Batch all known source, formatting, test, packaging, and workflow repairs.
-3. Record the exact source commit, commands, expected evidence, and stop condition.
-4. Confirm the workflow cannot merge, deploy, publish, mutate backend state, expose private material, or retrigger itself unless separately authorized.
+1. re-read the governing documents;
+2. run every available check in the active working environment;
+3. batch all known source, formatting, test, packaging, and workflow repairs;
+4. record the exact source commit, commands, expected evidence, and stop condition;
+5. confirm least privilege, timeout, concurrency, and no unauthorized merge, deploy, publication, backend mutation, or retrigger.
 
 After the first failed run:
 
-1. Stop all workflow activity.
-2. Inspect the complete failed job and logs.
-3. Preserve every successful step as evidence.
-4. Search the known-problems register for the matching mechanism.
-5. Diagnose and batch all known repairs outside Actions.
-6. Record the diagnosis, replacement method, and exact stop condition.
-7. Permit at most one corrective acceptance run.
+1. stop workflow activity;
+2. inspect the complete failed job and logs;
+3. classify only the step that actually ran;
+4. preserve every successful step as evidence;
+5. search all relevant local and cross-repository known-problems records;
+6. diagnose the complete affected boundary and batch corrections outside Actions;
+7. permit at most one corrective acceptance run.
 
-If the corrective run fails because of another application, test, packaging, formatting, transport, or workflow defect, the circuit is open:
+If the corrective run exposes another application, fixture, runtime, test, formatter, build, packaging, workflow, or documentation defect, the circuit is open.
 
-- do not trigger, rerun, replace, or create another workflow on that branch;
-- move the work to a capable local or authenticated environment, use an intact-file route when the problem is only transport, or defer the checkpoint;
-- an additional run requires the owner to be told that the circuit is open and to authorize that one identified run explicitly.
+Once open, do not add, edit, trigger, rerun, schedule, or replace another workflow on that branch unless the work moves to a capable unmetered environment or the owner explicitly authorizes one identified, materially different exception after being told the circuit is open.
 
-Rerun only the failed job when possible. Never repeat successful installation, tests, browser engines, packaging, or deployment merely to rediscover a classified failure.
+Rerun only the failed job when possible. Never repeat successful installation, browser engines, tests, packaging, or deployment merely to rediscover classified evidence.
 
-## 10. Formatting preflight
+## 11. Failure-preserving acceptance
 
-When the repository has a pinned formatter, formatting is preparation, not acceptance.
+Any permitted workflow or capable environment that creates lasting source, fixtures, manifests, canonical exports, or evidence must fail forward:
 
-Use this sequence before a quality run:
+1. verify exact authority, immutable inputs, and changed-file boundaries before dependency installation;
+2. run dependency-free transformation and structural checks first;
+3. separate application transformation from documentation prose mutation;
+4. materialize and commit valid lasting work before later broad tests when technically possible;
+5. remove temporary workflows, scripts, and triggers without deleting lasting work;
+6. run focused proof before complete proof;
+7. preserve the lasting commit after a later failure;
+8. repair forward directly on the branch;
+9. never regenerate valid material merely to repair a later source, test, formatter, build, documentation, or publication defect;
+10. reconcile status records only after proof.
 
-1. Install from the exact lockfile when dependencies are needed.
-2. Run the repository-pinned formatter.
-3. Inspect or hash the working-tree diff.
-4. Repeat until two successive diff hashes are identical, with a hard maximum of four passes.
-5. Stop and isolate the responsible file or construct if the formatter does not converge within four passes.
-6. Run the formatter's check command on the stable tree.
-7. Inspect the diff for semantic changes.
-8. Run the complete check suite.
-9. Commit source and canonical formatting together.
+Acceptance must not erase the work it is trying to prove.
 
-The required phrase is:
+## 12. Formatting preflight
+
+When the repository declares a pinned formatter:
+
+1. install from the exact lockfile when needed;
+2. run the formatter;
+3. inspect or hash the working-tree diff;
+4. repeat until two successive diff hashes match, with a hard maximum of four passes;
+5. stop and isolate the exact file or construct if convergence fails;
+6. inspect the stable diff for semantic changes;
+7. run the formatter check;
+8. only then run the broader acceptance gate;
+9. commit source and canonical formatting together.
+
+Required sequence:
 
 `format to a fixed point, inspect, then check`
 
-Do not spend an Actions run discovering that formatting was never performed. A successful deployment build does not prove repository formatting.
+Do not invent a formatter command when the repository does not declare one. A successful deployment build does not prove formatting.
 
-If this repository has no pinned formatter, do not invent one merely to satisfy this section.
-
-## 11. Trigger, queue, and metadata discipline
+## 13. Trigger, queue, metadata, and relational-authority discipline
 
 Preserve the distinction between:
 
-- a commit being created;
-- a branch ref moving;
-- a pull request snapshot refreshing;
-- a workflow event being eligible;
-- a job entering the queue;
-- a job starting;
-- an artifact being produced;
-- a deploy being ingested, built, and published.
+- commit creation;
+- branch-ref movement;
+- PR refresh;
+- workflow eligibility;
+- queue entry;
+- job start;
+- artifact creation;
+- deploy ingestion;
+- build completion;
+- publication.
 
-Do not classify unchanged or stale PR metadata, a briefly unchanged deploy record, or the absence of an immediately visible workflow run as proof of failure. Require positive failure evidence or an exceeded bounded wait window before creating a new trigger.
+Require positive failure evidence or an exceeded bounded wait before issuing another trigger.
 
-Do not toggle PR state, change PR bases, create marker commits, install workflows on unrelated branches, schedule recurring jobs, or force-push branches merely to probe trigger behavior unless that exact diagnostic is the bounded authorized assignment.
+Do not toggle PR state, retarget bases, create marker commits, install workflows on unrelated branches, schedule recurring jobs, or force-push branches merely to probe behavior.
 
-## 12. Interface speech and explanatory-content separation
+Verification gates must compare candidates with the exact accepted base. Do not invent a cleaner repository shape than the baseline actually guarantees. Diagnostic assertions must identify expected and actual values.
 
-Even though VoiceOver is not the primary design authority, controls must remain clean and comprehensible.
+## 14. Interface speech and explanatory-content separation
 
-- Control names identify actions.
+- Controls identify actions.
 - Status regions report transitions.
 - Story, instructions, and technical explanation remain separate content.
-- Do not attach paragraphs of explanation to action buttons through `aria-describedby`.
-- Do not crowd the game board with narrative text that belongs on an introductory, Codex, or Hoard screen.
-- Omit absent optional information rather than creating repeated placeholder stops.
+- Do not attach explanatory paragraphs to action buttons through `aria-describedby`.
+- Do not crowd the board with narrative content that belongs on an introductory, Codex, or Hoard screen.
+- Omit absent optional information instead of creating repeated placeholder stops.
 - Collapse technical or diagnostic detail outside the ordinary play path.
 
-For Hollow & Hoard specifically, the introductory story and how-to-play material belongs on its own screen so the board remains visually calm.
+The introductory story and how-to-play material belong on a separate surface so the active board remains visually calm.
 
-## 13. Owner visibility
+## 15. Owner visibility and completion record
 
-During multi-step work, report the completed state, active gate, blocker, whether the present method remains viable, and the next consequential action.
+During multi-step work, report:
 
-After two tool calls without progress, or immediately when a mechanism proves invalid, say so plainly. Silence must not conceal repetition, speculative trigger experiments, or a stalled method.
+- completed state;
+- active gate;
+- blocker;
+- whether the method remains viable;
+- next consequential action.
 
-The app message `streaming interrupted` does not mean work continued in the background. Never imply hidden continuation.
+After two or three tool calls without forward progress, or immediately when a mechanism proves invalid, report it plainly. A stream interruption does not mean work continued invisibly.
 
-## 14. Completion record
-
-At the end of every repository assignment, report:
+At the end of every assignment, report:
 
 - exact branch and final commit;
 - files changed;
 - checks and evidence;
-- Actions runs or deployments, if any;
+- Actions runs or deployments;
 - dependencies, assets, services, or costs introduced;
-- accepted behavior intentionally preserved;
+- accepted behavior preserved;
 - anything unverified;
-- the next bounded step;
+- next bounded step;
 - whether owner or Cynthia action is required.
 
-Never claim completion from a PR description, planned workflow, local package, or generated image alone. Verify the repository state and the exact accepted artifact.
+Never claim completion from a plan, PR description, planned workflow, local package, or generated image alone. Verify the exact repository and artifact state.
+
+## Current stop state
+
+The August 5 governance reconciliation authorizes documentation changes only. It does not authorize Version 2 recovery, a clean rebuild, application or asset changes, another Actions run, workflow work, branch rewrite, PR mutation, deployment, publication, merge, or Cynthia testing.
 
 ## Provenance
 
-This governance rewrite deliberately imports and adapts proven operational lessons from Val Music Vault records VMV-009, VMV-011, VMV-012, VMV-013, VMV-014, VMV-015, and VMV-016. Hollow & Hoard's local incident details and receiving-repository boundaries are recorded in `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS.md`.
+This governance deliberately imports and adapts proven rules from Val Music Vault VMV-009, VMV-011, VMV-013, VMV-014, VMV-015, VMV-016, and VMV-017, and from Guitar Eyes GE-011, GE-015 through GE-022, `BRANCH_AUTHORITY.md`, and the August 5 cross-repository execution-governance reconciliation. Hollow-specific evidence and boundaries are recorded in the canonical register and `docs/KNOWN_PROBLEMS_AND_PROVEN_SOLUTIONS_HAH-009.md`.
