@@ -1,243 +1,239 @@
-export const SAVE_SCHEMA_VERSION = 1;
+export const SAVE_SCHEMA_VERSION = 2;
 export const BOARD_SIZE = 5;
 export const CELL_COUNT = BOARD_SIZE * BOARD_SIZE;
-export const MAX_CREATURE_TIER = 4;
-export const RELIC_TIER = 5;
 
-export const HOLLOWKIN = Object.freeze([
-  Object.freeze({ id: "imp", name: "Imp" }),
-  Object.freeze({ id: "goblin", name: "Goblin" }),
-  Object.freeze({ id: "hobgoblin", name: "Hobgoblin" }),
-  Object.freeze({ id: "troll", name: "Troll" }),
-  Object.freeze({ id: "ogre", name: "Ogre" }),
-  Object.freeze({ id: "relicBlossom", name: "Relic Blossom" }),
+export const FAMILIES = Object.freeze({
+  goblin: Object.freeze({
+    id: "goblin",
+    name: "Goblin Hollowkin",
+    starterName: "Imp",
+    dwelling: "Goblin Spawner",
+    relicName: "Relic Blossom",
+    tiers: Object.freeze([
+      Object.freeze({ id: "imp", name: "Imp" }),
+      Object.freeze({ id: "goblin", name: "Goblin" }),
+      Object.freeze({ id: "hobgoblin", name: "Hobgoblin" }),
+      Object.freeze({ id: "troll", name: "Troll" }),
+      Object.freeze({ id: "ogre", name: "Ogre" }),
+    ]),
+  }),
+  gargoyle: Object.freeze({
+    id: "gargoyle",
+    name: "Gargoyle Line",
+    starterName: "Mosscap",
+    dwelling: "Moonstone Nest",
+    relicName: "Moonlit Relic",
+    tiers: Object.freeze([
+      Object.freeze({ id: "mosscap", name: "Mosscap" }),
+      Object.freeze({ id: "hatchling", name: "Gargoyle Hatchling" }),
+      Object.freeze({ id: "gargoyle", name: "Gargoyle" }),
+      Object.freeze({ id: "elder", name: "Elder Gargoyle" }),
+    ]),
+  }),
+});
+
+const FAMILY_IDS = Object.freeze(Object.keys(FAMILIES));
+const STARTING_PIECES = Object.freeze([
+  [2, "goblin"], [6, "goblin"], [8, "goblin"], [11, "goblin"],
+  [13, "gargoyle"], [16, "gargoyle"], [18, "gargoyle"], [22, "gargoyle"],
 ]);
-
-const STARTING_IMP_INDICES = Object.freeze([2, 6, 8, 11, 13, 16, 18, 22]);
+const MIGRATION_GARGOYLE_SLOTS = Object.freeze([13, 16, 18, 22, 3, 21]);
 
 export function emptyBoard() {
   return Array(CELL_COUNT).fill(null);
 }
 
-export function createPiece(tier) {
-  if (!Number.isInteger(tier) || tier < 0 || tier > MAX_CREATURE_TIER) {
-    throw new RangeError(`Invalid creature tier: ${tier}`);
+export function isFamilyId(value) {
+  return FAMILY_IDS.includes(value);
+}
+
+export function createPiece(family, tier = 0) {
+  if (!isFamilyId(family)) throw new RangeError(`Unknown family: ${family}`);
+  if (!Number.isInteger(tier) || tier < 0 || tier >= FAMILIES[family].tiers.length) {
+    throw new RangeError(`Invalid ${family} tier: ${tier}`);
   }
-  return Object.freeze({ tier });
+  return { family, tier };
+}
+
+function createDiscovery() {
+  return Object.fromEntries(
+    FAMILY_IDS.map((family) => [family, Array(FAMILIES[family].tiers.length + 1).fill(false)])
+  );
+}
+
+export function createInitialState() {
+  const board = emptyBoard();
+  STARTING_PIECES.forEach(([index, family]) => {
+    board[index] = createPiece(family, 0);
+  });
+  const discovered = createDiscovery();
+  FAMILY_IDS.forEach((family) => {
+    discovered[family][0] = true;
+  });
+  return {
+    schemaVersion: SAVE_SCHEMA_VERSION,
+    board,
+    discovered,
+    relics: { goblin: 0, gargoyle: 0 },
+    actions: 0,
+    introSeen: false,
+  };
 }
 
 export function cloneState(state) {
   return {
     schemaVersion: SAVE_SCHEMA_VERSION,
-    board: state.board.map((piece) => (piece ? { tier: piece.tier } : null)),
-    discovered: state.discovered.slice(),
-    relics: state.relics,
+    board: state.board.map((piece) => (piece ? { ...piece } : null)),
+    discovered: Object.fromEntries(FAMILY_IDS.map((family) => [family, state.discovered[family].slice()])),
+    relics: { ...state.relics },
     actions: state.actions,
+    introSeen: Boolean(state.introSeen),
   };
 }
 
-export function createInitialState() {
-  const board = emptyBoard();
-  STARTING_IMP_INDICES.forEach((index) => {
-    board[index] = { tier: 0 };
-  });
-
-  return {
-    schemaVersion: SAVE_SCHEMA_VERSION,
-    board,
-    discovered: [true, false, false, false, false, false],
-    relics: 0,
-    actions: 0,
-  };
-}
-
-export function createStateFromTiers(tiers, options = {}) {
-  if (!Array.isArray(tiers) || tiers.length > CELL_COUNT) {
-    throw new TypeError("tiers must be an array no longer than the board");
+export function createStateFromPieces(pieces, options = {}) {
+  const state = createInitialState();
+  state.board = emptyBoard();
+  state.discovered = createDiscovery();
+  for (const { index, family, tier } of pieces) {
+    if (!Number.isInteger(index) || index < 0 || index >= CELL_COUNT) throw new RangeError("Invalid board index");
+    state.board[index] = createPiece(family, tier);
+    state.discovered[family][tier] = true;
   }
-
-  const board = emptyBoard();
-  tiers.forEach((tier, index) => {
-    if (tier === null || tier === undefined) return;
-    board[index] = { tier };
+  state.relics = { goblin: options.goblinRelics ?? 0, gargoyle: options.gargoyleRelics ?? 0 };
+  FAMILY_IDS.forEach((family) => {
+    if (state.relics[family] > 0) state.discovered[family][FAMILIES[family].tiers.length] = true;
   });
-
-  const discovered = Array(HOLLOWKIN.length).fill(false);
-  board.forEach((piece) => {
-    if (piece) discovered[piece.tier] = true;
-  });
-  if ((options.relics ?? 0) > 0) discovered[RELIC_TIER] = true;
-
-  return {
-    schemaVersion: SAVE_SCHEMA_VERSION,
-    board,
-    discovered,
-    relics: options.relics ?? 0,
-    actions: options.actions ?? 0,
-  };
-}
-
-export function isBoardIndex(index) {
-  return Number.isInteger(index) && index >= 0 && index < CELL_COUNT;
+  state.actions = options.actions ?? 0;
+  state.introSeen = options.introSeen ?? true;
+  return state;
 }
 
 export function emptyIndices(board) {
-  const result = [];
-  board.forEach((piece, index) => {
-    if (piece === null) result.push(index);
-  });
-  return result;
+  return board.flatMap((piece, index) => (piece ? [] : [index]));
 }
 
-export function countPieces(board, tier = null) {
-  return board.reduce((count, piece) => {
-    if (!piece) return count;
-    if (tier !== null && piece.tier !== tier) return count;
-    return count + 1;
-  }, 0);
+function accepted(kind, state, details = {}) {
+  return { accepted: true, kind, state, reason: null, ...details };
 }
 
-function acceptedResult(kind, state, details = {}) {
-  return {
-    accepted: true,
-    kind,
-    state,
-    reason: null,
-    ...details,
-  };
-}
-
-function rejectedResult(reason, state, details = {}) {
-  return {
-    accepted: false,
-    kind: "rejected",
-    state,
-    reason,
-    ...details,
-  };
+function rejected(reason, state, details = {}) {
+  return { accepted: false, kind: "rejected", state, reason, ...details };
 }
 
 export function resolveDrop(state, fromIndex, toIndex) {
-  if (!isBoardIndex(fromIndex) || !isBoardIndex(toIndex)) {
-    return rejectedResult("outside-board", state, { fromIndex, toIndex });
+  if (![fromIndex, toIndex].every((value) => Number.isInteger(value) && value >= 0 && value < CELL_COUNT)) {
+    return rejected("outside-board", state, { fromIndex, toIndex });
   }
-  if (fromIndex === toIndex) {
-    return rejectedResult("same-tile", state, { fromIndex, toIndex });
-  }
-
+  if (fromIndex === toIndex) return rejected("same-tile", state, { fromIndex, toIndex });
   const source = state.board[fromIndex];
   const target = state.board[toIndex];
-  if (!source) {
-    return rejectedResult("empty-source", state, { fromIndex, toIndex });
-  }
+  if (!source) return rejected("empty-source", state, { fromIndex, toIndex });
 
   const next = cloneState(state);
-
   if (!target) {
-    next.board[toIndex] = { tier: source.tier };
+    next.board[toIndex] = { ...source };
     next.board[fromIndex] = null;
     next.actions += 1;
-    return acceptedResult("relocate", next, {
-      fromIndex,
-      toIndex,
-      tier: source.tier,
-      relicCreated: false,
-    });
+    return accepted("relocate", next, { fromIndex, toIndex, family: source.family, tier: source.tier });
   }
-
+  if (target.family !== source.family) {
+    return rejected("mixed-family", state, { fromIndex, toIndex, sourceFamily: source.family, targetFamily: target.family });
+  }
   if (target.tier !== source.tier) {
-    return rejectedResult("unequal-tier", state, {
-      fromIndex,
-      toIndex,
-      sourceTier: source.tier,
-      targetTier: target.tier,
-    });
+    return rejected("unequal-tier", state, { fromIndex, toIndex, family: source.family, sourceTier: source.tier, targetTier: target.tier });
   }
 
   next.board[fromIndex] = null;
   next.actions += 1;
-
-  if (source.tier === MAX_CREATURE_TIER) {
+  const family = FAMILIES[source.family];
+  const finalCreatureTier = family.tiers.length - 1;
+  if (source.tier === finalCreatureTier) {
     next.board[toIndex] = null;
-    next.relics += 1;
-    next.discovered[RELIC_TIER] = true;
-    return acceptedResult("relic", next, {
+    next.relics[source.family] += 1;
+    next.discovered[source.family][family.tiers.length] = true;
+    return accepted("relic", next, {
       fromIndex,
       toIndex,
+      family: source.family,
       tier: source.tier,
-      newTier: RELIC_TIER,
-      relicCreated: true,
+      relicName: family.relicName,
     });
   }
 
   const newTier = source.tier + 1;
-  next.board[toIndex] = { tier: newTier };
-  next.discovered[newTier] = true;
-
-  return acceptedResult("merge", next, {
-    fromIndex,
-    toIndex,
-    tier: source.tier,
-    newTier,
-    relicCreated: false,
-  });
+  next.board[toIndex] = createPiece(source.family, newTier);
+  next.discovered[source.family][newTier] = true;
+  return accepted("merge", next, { fromIndex, toIndex, family: source.family, tier: source.tier, newTier });
 }
 
-function chooseRandomEmpty(empty, rng) {
-  const choice = Math.floor(rng() * empty.length);
-  return empty.splice(Math.max(0, Math.min(choice, empty.length - 1)), 1)[0];
+function chooseEmpty(available, rng) {
+  const raw = Math.floor(rng() * available.length);
+  const index = Math.max(0, Math.min(raw, available.length - 1));
+  return available.splice(index, 1)[0];
 }
 
-export function summonImps(state, rng = Math.random, requested = 2) {
+export function summonFamily(state, family, rng = Math.random, requested = 2) {
+  if (!isFamilyId(family)) return rejected("unknown-family", state, { family, spawnedIndices: [] });
   const available = emptyIndices(state.board);
   const count = Math.min(Math.max(0, requested), available.length);
-  if (count === 0) {
-    return rejectedResult("board-full", state, { spawnedIndices: [] });
-  }
-
+  if (!count) return rejected("board-full", state, { family, spawnedIndices: [] });
   const next = cloneState(state);
   const spawnedIndices = [];
-  for (let index = 0; index < count; index += 1) {
-    const destination = chooseRandomEmpty(available, rng);
-    next.board[destination] = { tier: 0 };
-    spawnedIndices.push(destination);
+  for (let i = 0; i < count; i += 1) {
+    const index = chooseEmpty(available, rng);
+    next.board[index] = createPiece(family, 0);
+    spawnedIndices.push(index);
   }
-  next.discovered[0] = true;
+  next.discovered[family][0] = true;
   next.actions += 1;
-
-  return acceptedResult("summon", next, {
-    spawnedIndices,
-    requested,
-    summoned: spawnedIndices.length,
-    relicCreated: false,
-  });
+  return accepted("summon", next, { family, spawnedIndices, summoned: count, requested });
 }
 
 export function validateState(candidate) {
-  if (!candidate || typeof candidate !== "object") return false;
-  if (candidate.schemaVersion !== SAVE_SCHEMA_VERSION) return false;
+  if (!candidate || candidate.schemaVersion !== SAVE_SCHEMA_VERSION) return false;
   if (!Array.isArray(candidate.board) || candidate.board.length !== CELL_COUNT) return false;
-  if (!Array.isArray(candidate.discovered) || candidate.discovered.length !== HOLLOWKIN.length) {
-    return false;
-  }
-  if (!Number.isInteger(candidate.relics) || candidate.relics < 0) return false;
+  if (!candidate.discovered || !candidate.relics) return false;
   if (!Number.isInteger(candidate.actions) || candidate.actions < 0) return false;
-
-  const validBoard = candidate.board.every((piece) => {
+  if (typeof candidate.introSeen !== "boolean") return false;
+  for (const family of FAMILY_IDS) {
+    if (!Number.isInteger(candidate.relics[family]) || candidate.relics[family] < 0) return false;
+    if (!Array.isArray(candidate.discovered[family]) || candidate.discovered[family].length !== FAMILIES[family].tiers.length + 1) return false;
+    if (!candidate.discovered[family].every((value) => typeof value === "boolean")) return false;
+  }
+  return candidate.board.every((piece) => {
     if (piece === null) return true;
-    return (
-      piece &&
-      typeof piece === "object" &&
-      Number.isInteger(piece.tier) &&
-      piece.tier >= 0 &&
-      piece.tier <= MAX_CREATURE_TIER
-    );
+    return Boolean(piece && isFamilyId(piece.family) && Number.isInteger(piece.tier) && piece.tier >= 0 && piece.tier < FAMILIES[piece.family].tiers.length);
   });
-  if (!validBoard) return false;
+}
 
-  return candidate.discovered.every((value) => typeof value === "boolean");
+export function migrateV1State(candidate) {
+  if (!candidate || candidate.schemaVersion !== 1 || !Array.isArray(candidate.board)) return createInitialState();
+  const state = createInitialState();
+  state.board = emptyBoard();
+  candidate.board.slice(0, CELL_COUNT).forEach((piece, index) => {
+    if (piece && Number.isInteger(piece.tier) && piece.tier >= 0 && piece.tier < FAMILIES.goblin.tiers.length) {
+      state.board[index] = createPiece("goblin", piece.tier);
+      state.discovered.goblin[piece.tier] = true;
+    }
+  });
+  state.relics.goblin = Number.isInteger(candidate.relics) && candidate.relics > 0 ? candidate.relics : 0;
+  if (state.relics.goblin) state.discovered.goblin[FAMILIES.goblin.tiers.length] = true;
+  let added = 0;
+  for (const index of MIGRATION_GARGOYLE_SLOTS) {
+    if (!state.board[index] && added < 4) {
+      state.board[index] = createPiece("gargoyle", 0);
+      added += 1;
+    }
+  }
+  state.discovered.gargoyle[0] = true;
+  state.actions = Number.isInteger(candidate.actions) && candidate.actions >= 0 ? candidate.actions : 0;
+  state.introSeen = false;
+  return state;
 }
 
 export function hydrateState(candidate) {
-  return validateState(candidate) ? cloneState(candidate) : createInitialState();
+  if (validateState(candidate)) return cloneState(candidate);
+  if (candidate?.schemaVersion === 1) return migrateV1State(candidate);
+  return createInitialState();
 }

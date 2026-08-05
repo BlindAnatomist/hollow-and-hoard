@@ -1,77 +1,62 @@
-let context = null;
-let muted = false;
+let context;
+let muted = localStorage.getItem("hollow-and-hoard-muted") === "true";
+let ambientTimer;
 
-function audioContext() {
-  if (muted) return null;
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) return null;
-  if (!context) context = new AudioContext();
-  if (context.state === "suspended") context.resume().catch(() => {});
+function ensureContext() {
+  if (!context) context = new (window.AudioContext || window.webkitAudioContext)();
+  if (context.state === "suspended") context.resume();
   return context;
 }
 
-function tone({ frequency, duration = 0.12, gain = 0.025, delay = 0, type = "triangle" }) {
-  const ctx = audioContext();
-  if (!ctx) return;
-
-  const start = ctx.currentTime + delay;
-  const stop = start + duration;
+function tone({ frequency = 160, duration = 0.16, gain = 0.06, type = "sine", slide = 0 }) {
+  if (muted) return;
+  const ctx = ensureContext();
   const oscillator = ctx.createOscillator();
-  const filter = ctx.createBiquadFilter();
-  const envelope = ctx.createGain();
-
+  const volume = ctx.createGain();
+  const now = ctx.currentTime;
   oscillator.type = type;
-  oscillator.frequency.setValueAtTime(frequency, start);
-  filter.type = "lowpass";
-  filter.frequency.setValueAtTime(650, start);
-  filter.Q.setValueAtTime(0.45, start);
-
-  envelope.gain.setValueAtTime(0.0001, start);
-  envelope.gain.exponentialRampToValueAtTime(gain, start + Math.min(0.025, duration / 3));
-  envelope.gain.exponentialRampToValueAtTime(0.0001, stop);
-
-  oscillator.connect(filter);
-  filter.connect(envelope);
-  envelope.connect(ctx.destination);
-  oscillator.start(start);
-  oscillator.stop(stop + 0.02);
+  oscillator.frequency.setValueAtTime(frequency, now);
+  oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, frequency + slide), now + duration);
+  volume.gain.setValueAtTime(0.0001, now);
+  volume.gain.exponentialRampToValueAtTime(gain, now + 0.025);
+  volume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  oscillator.connect(volume).connect(ctx.destination);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.02);
 }
 
+function chord(notes, options = {}) {
+  notes.forEach((frequency, index) => window.setTimeout(() => tone({ frequency, ...options }), index * 35));
+}
+
+export function isMuted() { return muted; }
 export function setMuted(value) {
   muted = Boolean(value);
-  return muted;
+  localStorage.setItem("hollow-and-hoard-muted", String(muted));
+  if (muted) stopAmbient();
+  else startAmbient();
 }
+export const pickupCue = () => tone({ frequency: 130, duration: 0.09, gain: 0.045, slide: 18, type: "triangle" });
+export const relocationCue = () => tone({ frequency: 105, duration: 0.13, gain: 0.05, slide: -12, type: "sine" });
+export const deniedCue = () => tone({ frequency: 72, duration: 0.18, gain: 0.055, slide: -8, type: "triangle" });
+export const spawnCue = (family) => family === "goblin"
+  ? chord([110, 146], { duration: 0.18, gain: 0.05, type: "triangle", slide: 10 })
+  : chord([82, 123], { duration: 0.22, gain: 0.05, type: "sine", slide: -4 });
+export const mergeCue = (family, tier) => family === "goblin"
+  ? chord([135 + tier * 16, 180 + tier * 18], { duration: 0.23, gain: 0.06, type: "triangle", slide: 14 })
+  : chord([78 + tier * 10, 117 + tier * 12], { duration: 0.28, gain: 0.06, type: "sine", slide: 5 });
+export const relicCue = (family) => family === "goblin"
+  ? chord([98, 147, 196], { duration: 0.48, gain: 0.065, type: "triangle", slide: 9 })
+  : chord([65, 98, 147], { duration: 0.55, gain: 0.065, type: "sine", slide: 4 });
+export const openCue = (kind) => tone({ frequency: kind === "codex" ? 145 : 92, duration: 0.16, gain: 0.04, slide: 8, type: "sine" });
 
-export function isMuted() {
-  return muted;
+export function startAmbient() {
+  if (muted || ambientTimer) return;
+  ambientTimer = window.setInterval(() => {
+    if (document.visibilityState === "visible") tone({ frequency: 54 + Math.random() * 12, duration: 1.2, gain: 0.009, type: "sine", slide: -3 });
+  }, 6500);
 }
-
-export function pickupCue() {
-  tone({ frequency: 110, duration: 0.07, gain: 0.014 });
-}
-
-export function relocationCue() {
-  tone({ frequency: 98, duration: 0.09, gain: 0.016 });
-}
-
-export function deniedCue() {
-  tone({ frequency: 82.4, duration: 0.11, gain: 0.012, type: "sine" });
-}
-
-export function mergeCue(tier = 0) {
-  const root = Math.min(130.8 + tier * 8, 164.8);
-  tone({ frequency: root, duration: 0.16, gain: 0.022 });
-  tone({ frequency: root * 1.25, duration: 0.18, gain: 0.014, delay: 0.035 });
-}
-
-export function relicCue() {
-  [98, 123.5, 146.8].forEach((frequency, index) => {
-    tone({
-      frequency,
-      duration: 0.72,
-      gain: index === 0 ? 0.024 : 0.014,
-      delay: index * 0.055,
-      type: "sine",
-    });
-  });
+export function stopAmbient() {
+  if (ambientTimer) window.clearInterval(ambientTimer);
+  ambientTimer = undefined;
 }
