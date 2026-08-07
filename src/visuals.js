@@ -197,7 +197,24 @@ function world(name) {
       <circle class="lantern-aura" cx="50" cy="60" r="14" fill="#d5aa62" opacity=".14"/>
       <circle class="lantern-flame" cx="50" cy="60" r="6" fill="#d9ae61" stroke="#74572f" stroke-width="2.4"/>`,
     "ui.codex": `<path d="M16 25 Q35 15 50 28 V83 Q34 68 16 76Z" fill="#b99a69" stroke="#4d3c2a" stroke-width="3.5"/><path d="M84 25 Q65 15 50 28 V83 Q66 68 84 76Z" fill="#cfb583" stroke="#4d3c2a" stroke-width="3.5"/><path d="M50 28 V83" stroke="#4d3c2a" stroke-width="2.8"/><path d="M27 38 H41 M27 47 H41 M27 56 H39 M59 38 H73 M59 47 H73 M61 56 H73" stroke="#755f41" stroke-width="2.5" stroke-linecap="round"/><path d="M22 29 Q34 23 45 31" fill="none" stroke="#e0c99c" stroke-width="2" opacity=".65"/>`,
-    "story.hollow": `<circle class="story-moon" cx="72" cy="23" r="17" fill="#d9cff0" opacity=".9"/><circle cx="72" cy="23" r="25" fill="#d9cff0" opacity=".07"/><path d="M0 79 Q20 50 43 67 Q65 40 100 72 V100 H0Z" fill="#273029"/><path d="M0 88 Q24 70 45 82 Q68 62 100 84 V100 H0Z" fill="#1b231e"/><path d="M12 87 Q27 53 43 87 M56 88 Q72 45 90 87" fill="#161d19" stroke="#607158" stroke-width="4"/><circle class="story-lantern" cx="29" cy="61" r="4" fill="#e2bd69"/><circle class="story-lantern" cx="60" cy="72" r="3" fill="#e2bd69"/><circle class="story-lantern" cx="81" cy="53" r="3" fill="#e2bd69"/><path d="M16 88 Q28 80 40 88 M60 88 Q73 78 87 88" fill="none" stroke="#6d7f61" stroke-width="3" opacity=".7"/>`,
+    "story.hollow": `
+      <circle class="story-moon-halo" cx="75" cy="20" r="23" fill="#cfc3eb" opacity=".07"/>
+      <circle class="story-moon" cx="75" cy="20" r="13" fill="#ddd3f2" opacity=".92"/>
+      <path d="M0 60 Q18 45 35 54 Q50 36 66 50 Q84 39 100 57 V100 H0Z" fill="#242b28"/>
+      <path d="M7 86 V56 Q8 48 16 47 H31 Q39 39 50 33 Q61 39 69 47 H84 Q92 48 93 56 V86Z" fill="#44454a" stroke="#282a2e" stroke-width="2.3"/>
+      <path d="M11 54 Q20 49 31 51 M69 51 Q81 49 89 54" fill="none" stroke="#60645f" stroke-width="2.4" opacity=".72"/>
+      <path d="M17 86 V65 Q17 53 28 53 Q39 53 39 65 V86Z" fill="#171a1d" stroke="#292c2d" stroke-width="2"/>
+      <path d="M61 86 V65 Q61 53 72 53 Q83 53 83 65 V86Z" fill="#171a1d" stroke="#292c2d" stroke-width="2"/>
+      <path d="M42 86 V58 Q42 48 50 45 Q58 48 58 58 V86Z" fill="#202326" stroke="#313438" stroke-width="2"/>
+      <path d="M44 86 L46 61 Q50 54 54 61 L56 86Z" fill="#171a1d"/>
+      <path d="M25 48 Q31 42 38 45 M60 45 Q67 42 74 48" fill="none" stroke="#718064" stroke-width="5" stroke-linecap="round"/>
+      <path d="M9 69 Q16 62 23 68 M78 68 Q86 61 92 68" fill="none" stroke="#63745a" stroke-width="4" stroke-linecap="round"/>
+      <path d="M11 84 Q20 77 31 82 Q38 76 45 82 M55 82 Q63 76 70 82 Q81 76 91 84" fill="none" stroke="#6a7c60" stroke-width="4" stroke-linecap="round" opacity=".82"/>
+      <path d="M42 100 Q44 84 50 74 Q56 84 58 100Z" fill="#55545a" opacity=".68"/>
+      <path d="M46 93 H54 M45 97 H55" stroke="#77767c" stroke-width="1.6" opacity=".5"/>
+      <g class="story-lantern-group"><path d="M13 52 V59 M87 52 V59" stroke="#6f5837" stroke-width="1.8"/><circle class="story-lantern-aura" cx="13" cy="61" r="8" fill="#e2b45f" opacity=".12"/><circle class="story-lantern" cx="13" cy="61" r="2.6" fill="#e8bd67"/><circle class="story-lantern-aura" cx="87" cy="61" r="8" fill="#e2b45f" opacity=".12"/><circle class="story-lantern" cx="87" cy="61" r="2.6" fill="#e8bd67"/></g>
+      <path d="M14 58 L12 64 M88 58 L90 64 M35 55 L32 59 M66 55 L68 59" stroke="#777b78" stroke-width="1.1" opacity=".45"/>
+      <g fill="#8576a5" opacity=".8"><circle cx="18" cy="84" r="1.2"/><circle cx="23" cy="81" r="1"/><circle cx="82" cy="82" r="1.1"/><circle cx="87" cy="85" r="1.2"/></g>`,
   };
   return svg(`world-art ${name.replaceAll(".", "-")}`, name, bodies[name]);
 }
